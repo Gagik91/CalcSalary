@@ -20,9 +20,9 @@ namespace CalcSalary
 
         public static void ActionMenu(string name)
         {
-            string role = "";
+            string role = null;
             byte selectedAction;
-
+            bool exit = false;
             //проверяем по имени к какой роли относится сотрудник и присваиваем соответствующее значение
             if (Manager.manager.Any(n => n.Name.ToLower() == name.ToLower()))
             { role = "Руководитель"; }
@@ -31,11 +31,17 @@ namespace CalcSalary
             else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == name.ToLower()))
             { role = "Внештатный сотрудник"; }
             else
-            { Console.WriteLine($"Сотрудник с именем {name} не найден"); }
-
+            { 
+                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите любую кнопку для выхода");  
+                return; 
+            }
+            
             Console.WriteLine($"Здравствуйте, {name}!");
             Console.WriteLine($"Ваша роль: {role}");
-            Console.WriteLine("Выберите желаемое действие:\n");
+            
+            //goto отбрасывает сюда, для зацикленности меню
+            StartMenu: 
+            Console.WriteLine("\nВыберите желаемое действие:\n");
 
             switch (role)
             {
@@ -51,7 +57,7 @@ namespace CalcSalary
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифры из предложенных вариантов");
+                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
                                 selectedAction = byte.Parse(Console.ReadLine());
                             }
                             catch { continue; }
@@ -69,7 +75,7 @@ namespace CalcSalary
                                     {
                                         try
                                         {
-                                            Console.WriteLine("Нужно ввести цифры из предложенных вариантов");
+                                            Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
                                             selectedEmployee = byte.Parse(Console.ReadLine());
                                         }
                                         catch { continue; }
@@ -81,18 +87,22 @@ namespace CalcSalary
                                 }
                                 break;
                             case 2:
-                                { Statistics.DisplayAllStats(); }
+                                { 
+                                    Statistics.DisplayAllStats();
+                                }
                                 break;
                             case 3:
-                                { Statistics.DisplayStats(manager: true); }
+                                { 
+                                    Statistics.DisplayStats(manager: true);
+                                }
                                 break;
                             case 4:
-                                { ActionsOfEmployees.AddHours(name, true); }
+                                { 
+                                    ActionsOfEmployees.AddHours(name, true);
+                                }
                                 break;
                             case 5:
-                                { }
-                                break;
-                            default:
+                                { exit = true; }
                                 break;
                         }
                     }
@@ -107,7 +117,7 @@ namespace CalcSalary
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифры из предложенных вариантов");
+                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
                                 selectedAction = byte.Parse(Console.ReadLine());
                             }
                             catch { continue; }
@@ -120,7 +130,8 @@ namespace CalcSalary
                             case 2:
                                 { Statistics.DisplayStats(name, false); }
                                 break;
-                            default:
+                            case 3:
+                                { exit = true; }
                                 break;
                         }
                     }
@@ -135,8 +146,9 @@ namespace CalcSalary
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифры из предложенных вариантов");
+                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
                                 selectedAction = byte.Parse(Console.ReadLine());
+                                Console.WriteLine();
                             }
                             catch { continue; }
                         }
@@ -149,13 +161,20 @@ namespace CalcSalary
                             case 2:
                                 { Statistics.DisplayStats(name, false); }
                                 break;
-                            default:
+                            case 3:
+                                { exit = true; }
                                 break;
                         }
                     }
                     break;
                 default:
                     break;
+            }
+            //если role не null, то отбросить к точке начала меню - StartMenu:
+            if (role is not null && exit is false)
+            {
+                //goto отбрасывает на начало меню, для зацикленности
+                goto StartMenu;
             }
         }
     }

@@ -148,7 +148,6 @@ namespace CalcSalary
             }
         }
 
-
         public static string ManagerReader()
         {
             using (StreamReader employeeListStreamReader = new StreamReader(manFile, true))
@@ -174,7 +173,7 @@ namespace CalcSalary
             }
         }
 
-        public static void ManagerList (DateTime date, string name, byte hours, string message)
+        public static void ManagerWriter (DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(manFile, true))
             {
@@ -182,21 +181,21 @@ namespace CalcSalary
             }
         }
 
-        public static void EmployeeList(DateTime date, string name, byte hours, string message)
+        public static void EmployeeWriter(DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(empFile, true))
             {
                 employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
-        public static void FreelancerList(DateTime date, string name, byte hours, string message)
+        public static void FreelancerWriter(DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(freeFile, true))
             {
                 employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
-        public void EmpList(string name, string role)
+        public void EmployeeList(string name, string role)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
             {
@@ -215,20 +214,20 @@ namespace CalcSalary
             {
                 if (role == "manager")
                 {
-                    ManagerList(Date, Name, Hours, Message);
+                    ManagerWriter(Date, Name, Hours, Message);
                     ManagerReader();
                 }
                 else if (role == "employee")
                 {
-                    EmployeeList(Date, Name, Hours, Message);
+                    EmployeeWriter(Date, Name, Hours, Message);
                     EmployeeReader();
                 }
                 else if (role == "freelancer")
                 {
-                    FreelancerList(Date, Name, Hours, Message);
+                    FreelancerWriter(Date, Name, Hours, Message);
                     FreelancerReader();
                 }
-                EmpList(Name, role);
+                EmployeeList(Name, role);
             }
         }
     }
