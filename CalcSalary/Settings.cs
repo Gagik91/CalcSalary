@@ -4,14 +4,6 @@ using System.Text;
 
 namespace CalcSalary
 {
-    enum ManagerFunction
-    {
-        addEmployee = 1,
-        printReportAllEmployee,
-        printReportStaffMember,
-        addWorkHours,
-        exit
-    }
     public static class Settings
     {
         public class Manager

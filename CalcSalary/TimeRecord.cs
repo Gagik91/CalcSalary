@@ -10,13 +10,9 @@ namespace CalcSalary
     public class TimeRecord
     {
         public DateTime Date{ get; set; }
-
         public string Name{ get; set; }
-
         public byte Hours { get; set; }
-
         public string Message { get; set; }
-
         public decimal TotalPay { get; set; }
 
         public static string manFile = @"F:\CalcSalary\managerHoursWorkedList.csv";
@@ -24,13 +20,11 @@ namespace CalcSalary
         public static string freeFile = @"F:\CalcSalary\freelancerHoursWorkedList.csv";
         public static string employeeListFile = @"F:\CalcSalary\employeeListFile.csv";
 
-
-
         public static void FilesActionManager()
         {
             //получаем массив string в каждом элементе следующая информация:
             //дата, имя, отработанных количество часов, сообщение
-            var manData = TimeRecord.ManagerReader().Split('\n', int.MaxValue);
+            var manData = ManagerReader().Split('\n', int.MaxValue);
 
             List<string> manName = new List<string>();
             List<string> manDate = new List<string>();
@@ -66,7 +60,7 @@ namespace CalcSalary
 
             for (int i = 0; i < manName.Count; i++)
             {
-                Manager.AddMan(manName[i], manHours[i], DateTime.Parse(manDate[i]), manMessage[i]);
+                ActionsOfEmployees.AddMan(manName[i], manHours[i], DateTime.Parse(manDate[i]), manMessage[i]);
             }
         }
 
@@ -74,7 +68,7 @@ namespace CalcSalary
         {
             //получаем массив string в каждом элементе следующая информация:
             //дата, имя, отработанных количество часов, сообщение
-            var empData = TimeRecord.EmployeeReader().Split('\n', int.MaxValue);
+            var empData = EmployeeReader().Split('\n', int.MaxValue);
 
             List<string> empName = new List<string>();
             List<string> empDate = new List<string>();
@@ -109,14 +103,14 @@ namespace CalcSalary
 
             for (int i = 0; i < empName.Count; i++)
             {
-                Manager.AddEmp(empName[i], empHours[i], DateTime.Parse(empDate[i]), empMessage[i]);
+                ActionsOfEmployees.AddEmp(empName[i], empHours[i], DateTime.Parse(empDate[i]), empMessage[i]);
             }
         }
         public static void FilesActionFreelancer()
         {
             //получаем массив string в каждом элементе следующая информация:
             //дата, имя, отработанных количество часов, сообщение
-            var freeData = TimeRecord.FreelancerReader().Split('\n', int.MaxValue);
+            var freeData = FreelancerReader().Split('\n', int.MaxValue);
 
             List<string> freeName = new List<string>();
             List<string> freeDate = new List<string>();
@@ -151,7 +145,7 @@ namespace CalcSalary
 
             for (int i = 0; i < freeName.Count; i++)
             {
-                Manager.AddFree(freeName[i], freeHours[i], DateTime.Parse(freeDate[i]), freeMessage[i]);
+                ActionsOfEmployees.AddFree(freeName[i], freeHours[i], DateTime.Parse(freeDate[i]), freeMessage[i]);
             }
         }
 
