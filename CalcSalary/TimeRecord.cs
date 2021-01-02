@@ -39,7 +39,6 @@ namespace CalcSalary
                 int endHours = 0;
                 int startMessage = 0;
 
-
                 if (item.Length > 0)
                 {
                     manDate.Add(item[0..10]);
@@ -150,8 +149,6 @@ namespace CalcSalary
         }
 
 
-
-
         public static string ManagerReader()
         {
             using (StreamReader employeeListStreamReader = new StreamReader(manFile, true))
@@ -177,26 +174,26 @@ namespace CalcSalary
             }
         }
 
-        public void ManagerList (DateTime date, string name, byte hours, string message)
+        public static void ManagerList (DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(manFile, true))
             {
-                employeeListStreamWriter.WriteLine($"{Date.ToShortDateString()}, {Name}, {Hours}, {Message}");
+                employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
 
-        public void EmployeeList(DateTime date, string name, byte hours, string message)
+        public static void EmployeeList(DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(empFile, true))
             {
-                employeeListStreamWriter.WriteLine($"{Date.ToShortDateString()},{Name}, {Hours}, {Message}");
+                employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
-        public void FreelancerList(DateTime date, string name, byte hours, string message)
+        public static void FreelancerList(DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(freeFile, true))
             {
-                employeeListStreamWriter.WriteLine($"{Date.ToShortDateString()},{Name}, {Hours}, {Message}");
+                employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
         public void EmpList(string name, string role)

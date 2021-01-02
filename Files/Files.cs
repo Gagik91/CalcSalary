@@ -10,6 +10,5 @@ namespace CalcSalary
 {
     public class Files
     {
-
     }  
 }

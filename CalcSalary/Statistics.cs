@@ -59,7 +59,7 @@ namespace CalcSalary
                 var sumHours = 0;
                 foreach (var h in tRecords)
                 {
-                    tPay += item.TotalPay;
+                    tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
                 Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
@@ -74,7 +74,7 @@ namespace CalcSalary
                 var sumHours = 0;
                 foreach (var h in tRecords)
                 {
-                    tPay += item.TotalPay;
+                    tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
                 hoursWorked += sumHours;
@@ -89,7 +89,7 @@ namespace CalcSalary
                 var sumHours = 0;
                 foreach (var h in tRecords)
                 {
-                    tPay += item.TotalPay;
+                    tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
                 hoursWorked += sumHours;
