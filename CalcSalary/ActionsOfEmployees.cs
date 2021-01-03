@@ -253,6 +253,10 @@ namespace CalcSalary
                     }
                     Statistics.DisplayStats(name, true);
                 }
+                else
+                {
+                    Console.WriteLine("Сотрудник с таким именем отсутствует\n");
+                }
             }
             nameEmp = name;
             if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()) && manager == false)
