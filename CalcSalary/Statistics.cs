@@ -110,16 +110,18 @@ namespace CalcSalary
                 if (period == 1)
                 {
                     startDate = today.AddDays(-1);
-                    nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 2)
                 {
                     startDate = today.AddDays(-7);
-                    nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 3)
                 {
                     startDate = today.AddDays(-31);
+                }
+
+                if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
                     nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
             }
@@ -130,16 +132,18 @@ namespace CalcSalary
                 if (period == 1)
                 {
                     startDate = today.AddDays(-1);
-                    nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 2)
                 {
                     startDate = today.AddDays(-7);
-                    nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 3)
                 {
                     startDate = today.AddDays(-31);
+                }
+
+                if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
                     nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
             }
@@ -149,42 +153,50 @@ namespace CalcSalary
                 if (period == 1)
                 {
                     startDate = today.AddDays(-1);
-                    nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 2)
                 {
                     startDate = today.AddDays(-7);
-                    nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
                 else if (period == 3)
                 {
                     startDate = today.AddDays(-31);
+                }
+
+                if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
                     nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
                 }
             }
             else
             {
                 Console.WriteLine("\nСотрудник с таким именем отсутствует");
+                return;
             }
-            if (nm is not null)
+            if (nm is not null )
             {
+                decimal tPay = 0;
+                var sumHours = 0;
+                string name = nm.FirstOrDefault(s => s.Name.ToLower() == nameEmp.ToLower()).Name;
+
+                Console.WriteLine($"\nОтчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()}");
                 foreach (var item in nm)
                 {
-                    var totalPH = item.TimeRecords.Where(t => t.Date.Day >= startDate.Day);
-
-                    decimal tPay = 0;
-                    var sumHours = 0;
+                    var totalPH = item.TimeRecords.Where(t => t.Date >= startDate);
                     foreach (var ph in totalPH)
                     {
                         tPay += ph.TotalPay;
                         sumHours += ph.Hours;
-                        Console.WriteLine($"\n{ph.Date.ToShortDateString()}, {ph.Hours} часов, {ph.Message}");
-                    }
-                    Console.WriteLine($"Отчет по сотруднику: {item.Name} за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()}");
-                    Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
-                    Console.WriteLine("___________________________");
+                        Console.WriteLine($"{ph.Date.ToShortDateString()}, {ph.Hours} часов, {ph.Message}");
+                    }  
                 }
-            }            
+                Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
+                Console.WriteLine("___________________________");
+            }
+            else
+            {
+                Console.WriteLine($"В период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} суотрудник {nameEmp} не работал");
+            }
         }
 
         public static void DisplayStats(string name = "", bool manager = false)

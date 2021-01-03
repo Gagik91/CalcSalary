@@ -58,7 +58,7 @@ namespace CalcSalary
             return TotalPay;
         }
 
-        public static void AddMan(string name, byte hours, DateTime? dt = null, string message = "", bool newMan = false)
+        public static void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcManager(hours);
             if (dt is null)
@@ -71,7 +71,7 @@ namespace CalcSalary
             });
             Manager.manager.Add(m);
         }
-        public static void AddEmp(string name, byte hours, DateTime? dt = null, string message = "", bool newMan = false)
+        public static void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcEmployee(hours);
             if (dt is null)
@@ -80,11 +80,11 @@ namespace CalcSalary
             }
             Employee e = new Employee(name, new List<TimeRecord>()
             {
-                new TimeRecord(dt.Value.AddDays(0), name, hours, "Start work", TotalPay, "employee", newMan)
+                new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "employee", newMan)
             });
             Employee.employee.Add(e);
         }
-        public static void AddFree(string name, byte hours, DateTime? dt = null, string message = "", bool newMan = false)
+        public static void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcFreelancer(hours);
             if (dt is null)
@@ -93,7 +93,7 @@ namespace CalcSalary
             }
             Freelancer f = new Freelancer(name, new List<TimeRecord>()
             {
-                new TimeRecord(dt.Value.AddDays(0), name, hours, "Start work", TotalPay, "freelancer", newMan)
+                new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "freelancer", newMan)
             });
             Freelancer.freelancer.Add(f);
         }
