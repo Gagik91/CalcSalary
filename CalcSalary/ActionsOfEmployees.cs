@@ -161,7 +161,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcManager(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "manager"));
-                            TimeRecord.ManagerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.ManagerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                         }
                     }
                     Statistics.DisplayStats(name, true);
@@ -205,7 +205,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcEmployee(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                            TimeRecord.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                         }
                     }
                     Statistics.DisplayStats(name, true);
@@ -248,7 +248,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcFreelancer(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                            TimeRecord.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                         }
                     }
                     Statistics.DisplayStats(name, true);
@@ -291,7 +291,7 @@ namespace CalcSalary
                     {
                         TotalPay = SalaryCalcEmployee(hr);
                         item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                        TimeRecord.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                        Files.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                     }
                 }
             }
@@ -332,7 +332,7 @@ namespace CalcSalary
                     {
                         TotalPay = SalaryCalcFreelancer(hr);
                         item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                        TimeRecord.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                        Files.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                     }
                 }
             }

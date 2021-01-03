@@ -14,12 +14,12 @@ namespace CalcSalary
         {
             Console.Write("Введите Ваше имя: ");
             string name = Console.ReadLine();
-            TimeRecord.FilesActionManager();
-            TimeRecord.FilesActionEmployee();
-            TimeRecord.FilesActionFreelancer();
+            Files.FilesActionManager();
+            Files.FilesActionEmployee();
+            Files.FilesActionFreelancer();
 
             Person.ActionMenu(name);
-
+            Files a = new Files();
             Console.ReadLine();
         }
     }
