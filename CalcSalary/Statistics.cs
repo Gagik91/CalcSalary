@@ -25,8 +25,9 @@ namespace CalcSalary
             {
                 try
                 {
-                    Console.WriteLine("Нужно ввести цифры из предложенных вариантов");
+                    Console.Write("Нужно ввести цифры из предложенных вариантов: ");
                     period = byte.Parse(Console.ReadLine());
+                    Console.WriteLine("\n");
                 }
                 catch { continue; }
             }
@@ -49,7 +50,7 @@ namespace CalcSalary
             }
             else if (period == 3)
             {
-                startDate = today.AddDays(-31);
+                startDate = today.AddMonths(-1);
             }
 
             foreach (var item in Manager.manager)
@@ -62,7 +63,7 @@ namespace CalcSalary
                     tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
                 Console.WriteLine("________");
                 hoursWorked += sumHours;
                 amountToPaid += tPay;
@@ -79,7 +80,7 @@ namespace CalcSalary
                 }
                 hoursWorked += sumHours;
                 amountToPaid += tPay;
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
                 Console.WriteLine("________");
             }
             foreach (var item in Freelancer.freelancer)
@@ -94,10 +95,10 @@ namespace CalcSalary
                 }
                 hoursWorked += sumHours;
                 amountToPaid += tPay;
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
                 Console.WriteLine("________");
             }
-            Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} ");
+            Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} \n");
         }
 
         public static void CalcStats(string nameEmp)
@@ -179,7 +180,7 @@ namespace CalcSalary
                 var sumHours = 0;
                 string name = nm.FirstOrDefault(s => s.Name.ToLower() == nameEmp.ToLower()).Name;
 
-                Console.WriteLine($"\nОтчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()}");
+                Console.WriteLine($"\n\nОтчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()}");
                 foreach (var item in nm)
                 {
                     var totalPH = item.TimeRecords.Where(t => t.Date >= startDate);
@@ -191,11 +192,11 @@ namespace CalcSalary
                     }  
                 }
                 Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
-                Console.WriteLine("___________________________");
+                Console.WriteLine("___________________________\n");
             }
             else
             {
-                Console.WriteLine($"В период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()} суотрудник {nameEmp} не работал");
+                Console.WriteLine($"В период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} сотрудник {nameEmp} не работал");
             }
         }
 
@@ -204,8 +205,9 @@ namespace CalcSalary
             string nameEmp;
             if (manager)
             {
-                Console.WriteLine("\nУкажите имя сотрудника для построения отчета: ");
+                Console.Write("Укажите имя сотрудника для построения отчета: ");
                 nameEmp = Console.ReadLine();
+                Console.WriteLine("\n");
                 CalcStats(nameEmp);
             }
 

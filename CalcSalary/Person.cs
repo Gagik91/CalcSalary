@@ -51,14 +51,15 @@ namespace CalcSalary
                         Console.WriteLine("(2) Просмотреть отчет по всем сотрудникам: ");
                         Console.WriteLine("(3) Просмотреть отчет по конкретному сотруднику: ");
                         Console.WriteLine("(4) Добавить часы работы: ");
-                        Console.WriteLine("(5) Выход из программы: \n");
+                        Console.WriteLine("(5) Выход из программы: ");
                         selectedAction = 0;
                         while (selectedAction < 1 || selectedAction > 5)
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
                                 selectedAction = byte.Parse(Console.ReadLine());
+                                Console.WriteLine("\n");
                             }
                             catch { continue; }
                         }
@@ -75,13 +76,14 @@ namespace CalcSalary
                                     {
                                         try
                                         {
-                                            Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
+                                            Console.Write("Нужно ввести цифру из предложенных вариантов: ");
                                             selectedEmployee = byte.Parse(Console.ReadLine());
+                                            Console.WriteLine("\n");
                                         }
                                         catch { continue; }
                                     }
 
-                                    Console.WriteLine("Укажите имя для добавления сотрудника: ");
+                                    Console.Write("Укажите имя для добавления сотрудника: ");
                                     string nameEmployee = Console.ReadLine();
                                     ActionsOfEmployees.AddEmployee(nameEmployee, selected: selectedEmployee, addNew: true);
                                 }
@@ -111,14 +113,15 @@ namespace CalcSalary
                     {
                         Console.WriteLine("(1) Добавить часы работы: ");
                         Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
-                        Console.WriteLine("(3) Выход из программы: \n");
+                        Console.WriteLine("(3) Выход из программы: ");
                         selectedAction = 0;
                         while (selectedAction < 1 || selectedAction > 3)
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
                                 selectedAction = byte.Parse(Console.ReadLine());
+                                Console.WriteLine("\n");
                             }
                             catch { continue; }
                         }
@@ -146,9 +149,9 @@ namespace CalcSalary
                         {
                             try
                             {
-                                Console.WriteLine("Нужно ввести цифру из предложенных вариантов");
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
                                 selectedAction = byte.Parse(Console.ReadLine());
-                                Console.WriteLine();
+                                Console.WriteLine("\n");
                             }
                             catch { continue; }
                         }
