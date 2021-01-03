@@ -140,7 +140,7 @@ namespace CalcSalary
                     {
                         Console.WriteLine("(1) Добавить часы работы: ");
                         Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
-                        Console.WriteLine("(3) Выход из программы: \n");
+                        Console.WriteLine("(3) Выход из программы:");
                         selectedAction = 0;
                         while (selectedAction < 1 || selectedAction > 3)
                         {

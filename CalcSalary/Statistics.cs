@@ -164,25 +164,27 @@ namespace CalcSalary
             }
             else
             {
-                Console.WriteLine("Сотрудник с таким именем отсутствует");
+                Console.WriteLine("\nСотрудник с таким именем отсутствует");
             }
-
-            foreach (var item in nm)
+            if (nm is not null)
             {
-                var totalPH = item.TimeRecords.Where(t => t.Date.Day >= startDate.Day);
-
-                decimal tPay = 0;
-                var sumHours = 0;
-                foreach (var ph in totalPH)
+                foreach (var item in nm)
                 {
-                    tPay += ph.TotalPay;
-                    sumHours += ph.Hours;
-                    Console.WriteLine($"{ph.Date.ToShortDateString()}, {ph.Hours} часов, {ph.Message}");
+                    var totalPH = item.TimeRecords.Where(t => t.Date.Day >= startDate.Day);
+
+                    decimal tPay = 0;
+                    var sumHours = 0;
+                    foreach (var ph in totalPH)
+                    {
+                        tPay += ph.TotalPay;
+                        sumHours += ph.Hours;
+                        Console.WriteLine($"\n{ph.Date.ToShortDateString()}, {ph.Hours} часов, {ph.Message}");
+                    }
+                    Console.WriteLine($"Отчет по сотруднику: {item.Name} за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()}");
+                    Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
+                    Console.WriteLine("___________________________");
                 }
-                Console.WriteLine($"Отчет по сотруднику: {item.Name} за период с {startDate.ToShortDateString()} по {today.AddDays(0).ToShortDateString()}");
-                Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
-                Console.WriteLine("___________________________");
-            }
+            }            
         }
 
         public static void DisplayStats(string name = "", bool manager = false)
@@ -190,7 +192,7 @@ namespace CalcSalary
             string nameEmp;
             if (manager)
             {
-                Console.WriteLine("Укажите имя сотрудника для построения отчета: ");
+                Console.WriteLine("\nУкажите имя сотрудника для построения отчета: ");
                 nameEmp = Console.ReadLine();
                 CalcStats(nameEmp);
             }
@@ -199,7 +201,6 @@ namespace CalcSalary
             if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()) && manager == false)
             {
                 CalcStats(nameEmp);
-                
             }
             else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == nameEmp.ToLower()) && manager == false)
             {

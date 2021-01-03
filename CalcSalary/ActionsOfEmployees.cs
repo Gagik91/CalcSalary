@@ -140,7 +140,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Введите количество часов для добавления сотруднику {nameEmp}");
+                    Console.WriteLine($"\nВведите количество часов для добавления сотруднику {nameEmp}");
                     byte hr = 0;
                     while (hr < 1 || hr > 24)
                     {
@@ -153,7 +153,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Укажите какую работу выполнял {nameEmp}");
+                    Console.WriteLine($"\nУкажите какую работу выполнял {nameEmp}");
                     whatWorkWas = Console.ReadLine();
                     foreach (var item in Manager.manager)
                     {
@@ -184,7 +184,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Введите количество часов для добавления сотруднику {nameEmp}");
+                    Console.WriteLine($"\nВведите количество часов для добавления сотруднику {nameEmp}");
                     byte hr = 0;
                     while (hr < 1 || hr > 24)
                     {
@@ -197,7 +197,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Укажите какую работу выполнял {nameEmp}");
+                    Console.WriteLine($"\nУкажите какую работу выполнял {nameEmp}");
                     whatWorkWas = Console.ReadLine();
                     foreach (var item in Employee.employee)
                     {
@@ -227,7 +227,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Введите количество часов для добавления сотруднику {nameEmp}");
+                    Console.WriteLine($"\nВведите количество часов для добавления сотруднику {nameEmp}");
                     byte hr = 0;
                     while (hr < 1 || hr > 24)
                     {
@@ -240,7 +240,7 @@ namespace CalcSalary
                         { continue; }
                     }
 
-                    Console.WriteLine($"Укажите какую работу выполнял {nameEmp}");
+                    Console.WriteLine($"\nУкажите какую работу выполнял {nameEmp}");
                     whatWorkWas = Console.ReadLine();
                     foreach (var item in Freelancer.freelancer)
                     {
@@ -270,7 +270,7 @@ namespace CalcSalary
                     { continue; }
                 }
 
-                Console.WriteLine($"Введите количество часов для добавления");
+                Console.WriteLine($"\nВведите количество часов для добавления");
                 byte hr = 0;
                 while (hr < 1 || hr > 24)
                 {
@@ -283,7 +283,7 @@ namespace CalcSalary
                     { continue; }
                 }
 
-                Console.WriteLine($"Укажите какую работу выполняли: ");
+                Console.WriteLine($"\nУкажите какую работу выполняли:");
                 whatWorkWas = Console.ReadLine();
                 foreach (var item in Employee.employee)
                 {
@@ -310,7 +310,7 @@ namespace CalcSalary
                     { continue; }
                 }
 
-                Console.WriteLine($"Введите количество часов для добавления");
+                Console.WriteLine($"\nВведите количество часов для добавления");
                 byte hr = 0;
                 while (hr < 1 || hr > 24)
                 {
@@ -324,7 +324,7 @@ namespace CalcSalary
                 }
 
                 var nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower());
-                Console.WriteLine($"Укажите какую работу выполнял {nameEmp}");
+                Console.WriteLine($"\nУкажите какую работу выполняли:");
                 whatWorkWas = Console.ReadLine();
                 foreach (var item in Freelancer.freelancer)
                 {
