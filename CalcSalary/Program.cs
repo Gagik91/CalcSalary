@@ -12,12 +12,10 @@ namespace CalcSalary
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите Ваше имя: ");
-            string name = Console.ReadLine();
             Files.FilesActionManager();
             Files.FilesActionEmployee();
             Files.FilesActionFreelancer();
-            Person.ActionMenu(name);
+            Person.ActionMenu();
             Console.ReadLine();
         }
     }

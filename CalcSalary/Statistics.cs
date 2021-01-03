@@ -13,6 +13,7 @@ namespace CalcSalary
         public static byte period;
         public static DateTime today = DateTime.Today;
 
+        //метод выбора периода
         public static void Stats()
         {
             Console.WriteLine("Выберите период за который требуется просмотреть отчет");
@@ -57,7 +58,7 @@ namespace CalcSalary
             {
                 var tRecords = item.TimeRecords.Where(t => t.Date >= startDate);
                 decimal tPay = 0;
-                var sumHours = 0;
+                int sumHours = 0;
                 foreach (var h in tRecords)
                 {
                     tPay += h.TotalPay;
@@ -118,7 +119,7 @@ namespace CalcSalary
                 }
                 else if (period == 3)
                 {
-                    startDate = today.AddDays(-31);
+                    startDate = today.AddMonths(-1);
                 }
 
                 if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
@@ -140,7 +141,7 @@ namespace CalcSalary
                 }
                 else if (period == 3)
                 {
-                    startDate = today.AddDays(-31);
+                    startDate = today.AddMonths(-1);
                 }
 
                 if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
@@ -161,7 +162,7 @@ namespace CalcSalary
                 }
                 else if (period == 3)
                 {
-                    startDate = today.AddDays(-31);
+                    startDate = today.AddMonths(-1);
                 }
 
                 if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))

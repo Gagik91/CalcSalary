@@ -17,9 +17,11 @@ namespace CalcSalary
             Name = name;
             TimeRecords = timeRecords;
         }
-
-        public static void ActionMenu(string name)
+        
+        public static void ActionMenu()
         {
+            Console.Write("Введите Ваше имя: ");
+            string name = Console.ReadLine();
             string role = null;
             byte selectedAction;
             bool exit = false;
@@ -32,14 +34,14 @@ namespace CalcSalary
             { role = "Внештатный сотрудник"; }
             else
             { 
-                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите любую кнопку для выхода");  
-                return; 
+                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите любую кнопку для выхода");
+                return;
             }
             
             Console.WriteLine($"Здравствуйте, {name}!");
             Console.WriteLine($"Ваша роль: {role}");
             
-            //goto отбрасывает сюда, для зацикленности меню
+            //goto отбрасывает сюда, для зацикленности меню пользователя
             StartMenu: 
             Console.WriteLine("\nВыберите желаемое действие:\n");
 
