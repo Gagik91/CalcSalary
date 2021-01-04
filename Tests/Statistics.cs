@@ -37,7 +37,7 @@ namespace CalcSalary
                 catch { continue; }
             }
         }
-        public static void CalcStatsOfAll()
+        public static void CalcStatsOfAll(byte per = 0)
         {
             IEnumerable<Person> nm = null;
             DateTime startDate = new DateTime();
@@ -83,10 +83,11 @@ namespace CalcSalary
                     tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
-                hoursWorked += sumHours;
-                amountToPaid += tPay;
                 Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
                 Console.WriteLine("________");
+                hoursWorked += sumHours;
+                amountToPaid += tPay;
+
             }
             foreach (var item in Freelancer.freelancer)
             {
@@ -98,11 +99,12 @@ namespace CalcSalary
                     tPay += h.TotalPay;
                     sumHours += h.Hours;
                 }
-                hoursWorked += sumHours;
-                amountToPaid += tPay;
                 Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
                 Console.WriteLine("________");
+                hoursWorked += sumHours;
+                amountToPaid += tPay;
             }
+            Person.TotalPay += amountToPaid;
             Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} \n");
         }
 
@@ -125,27 +127,17 @@ namespace CalcSalary
                 startDate = today.AddMonths(-1);
             }
 
-            if (Manager.manager.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+            if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
             {
-                if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-                {
-                    nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-                }
+                nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
             }
-
-            else if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+            else if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
             {
-                if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-                {
-                    nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-                }
+                nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
             }
-            else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+            else if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
             {
-                if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-                {
-                    nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-                }
+                nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
             }
             else
             {
@@ -209,12 +201,6 @@ namespace CalcSalary
         {
             Stats();
             CalcStatsOfAll();
-        }
-        public static decimal CalcTest(decimal pay)
-        {
-            decimal sum = 0;
-            sum += pay;
-            return sum;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace CalcSalary
    public class Person
     {
         public string Name { get; set; }
-
+        public static decimal TotalPay { get; set; }
         public List<TimeRecord> TimeRecords { get; set; }
 
         public Person(string name, List<TimeRecord> timeRecords)
