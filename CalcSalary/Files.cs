@@ -30,7 +30,7 @@ namespace CalcSalary
                 int endHours = 0;
                 int startMessage = 0;
 
-                if (item.Length > 0)
+                if (item.Length > 1)
                 {
                     manDate.Add(item[0..10]);
                     startName = item.IndexOf(", ") + 2;
@@ -73,7 +73,7 @@ namespace CalcSalary
                 int endHours = 0;
                 int startMessage = 0;
 
-                if (item.Length > 0)
+                if (item.Length > 1)
                 {
                     empDate.Add(item[0..10]);
                     startName = item.IndexOf(", ") + 2;
@@ -116,7 +116,7 @@ namespace CalcSalary
                 int endHours = 0;
                 int startMessage = 0;
 
-                if (item.Length > 0)
+                if (item.Length > 1)
                 {
                     freeDate.Add(item[0..10]);
                     startName = item.IndexOf(", ") + 2;

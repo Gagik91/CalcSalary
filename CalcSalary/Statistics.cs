@@ -39,7 +39,6 @@ namespace CalcSalary
         }
         public static void CalcStatsOfAll(byte per = 0)
         {
-            IEnumerable<Person> nm = null;
             DateTime startDate = new DateTime();
 
             int hoursWorked = 0;

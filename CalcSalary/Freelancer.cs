@@ -6,7 +6,7 @@ namespace CalcSalary
 {
     public class Freelancer : Person
     {
-        public static decimal TotalPay { get; set; }
+        public static new decimal TotalPay { get; set; }
         public static List<Freelancer> freelancer = new List<Freelancer>();
         public Freelancer(string name, List<TimeRecord> timeRecords) : base(name, timeRecords)
         { }
