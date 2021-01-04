@@ -11,52 +11,41 @@ namespace Tests
         public void Setup()
         {
         }
-
+        //тест оплаты менеджера с выбором периода
         [Test]
         public void ManagerTotalPay()
         {
+            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-5), message: "test message");
+           
+            Statistics.CalcStats("test manager", 2);
 
-            Manager manager = new Manager("tests", new List<TimeRecord>()
-            {
-                new TimeRecord(DateTime.Now.AddDays(-3), "test", 8, "test message",1250,"manager"),
-                new TimeRecord(DateTime.Now.AddDays(-2), "test", 9, "test message",1250,"manager"),
-                new TimeRecord(DateTime.Now.AddDays(-1), "test", 1, "test message",1250,"manager"),
-            });
-
-            //10000 + 11000 + 8 750 = 29750
-            Assert.IsTrue(manager.TotalPay == 29750);
+            Assert.IsTrue(Manager.TotalPay == 2500);
             
         }
+        //тест оплаты штатного сотрудника с выбором периода
         [Test]
         public void EmployeeTotalPay()
         {
-
-            Employee employee = new Employee("tests", new List<TimeRecord>()
-            {
-                new TimeRecord(DateTime.Now.AddDays(-3), "test", 8, "test message",750,"employee"),
-                new TimeRecord(DateTime.Now.AddDays(-2), "test", 9, "test message",750,"employee"),
-                new TimeRecord(DateTime.Now.AddDays(-1), "test", 7, "test message",750,"employee"),
-            });
-
-
-
-            //6000 + 7000 + 5250
-            Assert.IsTrue(employee.TotalPay == 18250);
+            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            
+            Statistics.CalcStats("test employee", 2);
+           
+            Assert.IsTrue(Employee.TotalPay == 1500);
         }
+        //тест оплаты фрилансера с выбором периода
         [Test]
         public void FreelancerTotalPay()
         {
 
-            Freelancer freelancer = new Freelancer("tests", new List<TimeRecord>()
-            {
-                new TimeRecord(DateTime.Now.AddDays(-3), "test", 8, "test message",1000,"freelancer"),
-                new TimeRecord(DateTime.Now.AddDays(-2), "test", 9, "test message",1000,"freelancer"),
-                new TimeRecord(DateTime.Now.AddDays(-1), "test", 7, "test message",1000,"freelancer"),
-            });
+            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            
+            Statistics.CalcStats("test freelancer", 2);
+            
+            Assert.IsTrue(Freelancer.TotalPay == 2000);
 
-
-            //8000 + 9000 + 7000 = 24000
-            Assert.IsTrue(freelancer.TotalPay == 24000);
         }
 
     }

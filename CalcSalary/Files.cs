@@ -76,7 +76,7 @@ namespace CalcSalary
                 if (item.Length > 0)
                 {
                     empDate.Add(item[0..10]);
-                    startName = item.IndexOf(",") + 1;
+                    startName = item.IndexOf(", ") + 2;
                     string tempName = item.Substring(startName);
                     endName = tempName.IndexOf(", ");
                     empName.Add(tempName.Substring(0, endName));
@@ -119,7 +119,7 @@ namespace CalcSalary
                 if (item.Length > 0)
                 {
                     freeDate.Add(item[0..10]);
-                    startName = item.IndexOf(",") + 1;
+                    startName = item.IndexOf(", ") + 2;
                     string tempName = item.Substring(startName);
                     endName = tempName.IndexOf(", ");
                     freeName.Add(tempName.Substring(0, endName));

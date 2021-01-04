@@ -125,17 +125,27 @@ namespace CalcSalary
                 startDate = today.AddMonths(-1);
             }
 
-            if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+            if (Manager.manager.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
             {
-                nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
+                    nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                }
             }
-            else if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+
+            else if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
             {
-                nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
+                    nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                }
             }
-            else if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+            else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
             {
-                nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
+                {
+                    nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
+                }
             }
             else
             {
