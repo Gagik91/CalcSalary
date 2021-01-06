@@ -140,34 +140,88 @@ namespace CalcSalary
             }
         }
 
-        //чтение из файла managerHoursWorkedList.csv    -   список всех менеджеров с отработанными часами
+        //чтение из файла managerHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)    
+        //список всех менеджеров с отработанными часами
         public static string ManagerReader()
         {
-            using (StreamReader managerListStreamReader = new StreamReader(manFile, true))
+            string str = "";
+            if (Directory.Exists(@"Files"))
             {
-                string str = managerListStreamReader.ReadToEnd();
-                return str;
+                if (File.Exists(manFile))
+                {
+                    using (StreamReader managerListStreamReader = new StreamReader(manFile, true))
+                    {
+                        str = managerListStreamReader.ReadToEnd();
+                    }
+                }
+                else
+                {
+                    ManagerWriter(DateTime.MinValue," ",0," ");
+                    ManagerReader();
+                }
             }
+            else
+            {
+                Directory.CreateDirectory(manFile);
+                ManagerReader();
+            }
+            return str;
         }
 
-        //чтение из файла employeeHoursWorkedList.csv    -   список всех штатных сотрудников с отработанными часами
+        //чтение из файла employeeHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)
+        //список всех штатных сотрудников с отработанными часами
         public static string EmployeeReader()
-        {
-            using (StreamReader employeeListStreamReader = new StreamReader(empFile, true))
+        {            
+            string str = "";
+            if (Directory.Exists(@"Files"))
             {
-                string str = employeeListStreamReader.ReadToEnd();
-                return str;
+                if (File.Exists(empFile))
+                {
+                    using (StreamReader employeeListStreamReader = new StreamReader(empFile, true))
+                    {
+                        str = employeeListStreamReader.ReadToEnd();
+                    }
+                }
+                else
+                {
+                    EmployeeWriter(DateTime.MinValue, " ", 0, " ");
+                    EmployeeReader();
+                }
             }
+            else
+            {
+                Directory.CreateDirectory(empFile);
+                EmployeeReader();
+            }
+            return str;
         }
 
-        //чтение из файла freelancerHoursWorkedList.csv    -   список всех внештатных сотрудников с отработанными часами
+        //чтение из файла freelancerHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)
+        //список всех внештатных сотрудников с отработанными часами
         public static string FreelancerReader()
-        {
-            using (StreamReader freelancerListStreamReader = new StreamReader(freeFile, true))
+        {            
+            string str = "";
+            if (Directory.Exists(@"Files"))
             {
-                string str = freelancerListStreamReader.ReadToEnd();
-                return str;
+                if (File.Exists(freeFile))
+                {
+                    using (StreamReader freelancerListStreamReader = new StreamReader(freeFile, true))
+                    {
+                        str = freelancerListStreamReader.ReadToEnd();
+                    }
+                }
+                else
+                {
+                    FreelancerWriter(DateTime.MinValue, " ", 0, " ");
+                    FreelancerReader();
+                }
             }
+            else
+            {
+                Directory.CreateDirectory(freeFile);
+                FreelancerReader();
+            }
+            return str;
         }
 
         //запись в файл managerHoursWorkedList.csv    -   список всех менеджеров с отработанными часами
@@ -198,7 +252,7 @@ namespace CalcSalary
         }
 
         //запись в файл employeeListFile.csv    -   список всех сотрудников с указанием ролей
-        public static void EmployeeList(string name, string role)
+        public static void EmployeeListWriter(string name, string role)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
             {

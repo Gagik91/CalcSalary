@@ -40,7 +40,7 @@ namespace CalcSalary
                     Files.FreelancerWriter(Date, Name, Hours, Message);
                     Files.FreelancerReader();
                 }
-                Files.EmployeeList(Name, role);
+                Files.EmployeeListWriter(Name, role);
             }
         }
     }
