@@ -140,7 +140,7 @@ namespace CalcSalary
             }
             else
             {
-                Console.WriteLine("\nСотрудник с таким именем отсутствует");
+                Console.WriteLine($"\nСотрудник {nameEmp} не работал в период с {startDate.Date.ToShortDateString()} по {today.Date.ToShortDateString()}");
                 return;
             }
             

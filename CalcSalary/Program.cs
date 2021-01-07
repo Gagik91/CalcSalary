@@ -16,7 +16,6 @@ namespace CalcSalary
             Files.FilesActionEmployee();
             Files.FilesActionFreelancer();
             Person.ActionMenu();
-            Console.ReadLine();
         }
     }
 }

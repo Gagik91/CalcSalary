@@ -20,6 +20,8 @@ namespace CalcSalary
         
         public static void ActionMenu()
         {
+            //goto отбрасывает сюда для повторного ввода имени
+            StartProgram:
             Console.Write("Введите Ваше имя: ");
             string name = Console.ReadLine();
             string role = null;
@@ -34,8 +36,13 @@ namespace CalcSalary
             { role = "Внештатный сотрудник"; }
             else
             { 
-                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите любую кнопку для выхода");
-                return;
+                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите 1 для выхода или введите имя");
+                if (Console.ReadLine() == "1")
+                {
+                    return;
+                }
+                //отбрасывает для повторного ввода имени
+                goto StartProgram;
             }
             
             Console.WriteLine($"Здравствуйте, {name}!");
