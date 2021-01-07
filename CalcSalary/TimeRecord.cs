@@ -9,11 +9,11 @@ namespace CalcSalary
 {
     public class TimeRecord
     {
-        public DateTime Date{ get; set; }
-        public string Name{ get; set; }
-        public byte Hours { get; set; }
-        public string Message { get; set; }
-        public decimal TotalPay { get; set; }
+        public DateTime Date{ get; private set; }
+        public string Name{ get; private set; }
+        public byte Hours { get; private set; }
+        public string Message { get; private set; }
+        public decimal TotalPay { get; private set; }
 
         public TimeRecord(DateTime date, string name, byte hours, string message, decimal tPay, string role, bool newAdd = false)
         {

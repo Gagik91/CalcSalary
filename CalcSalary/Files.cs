@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace CalcSalary
 {
     public class Files
     {
-        public static string manFile = @"Files\managerHoursWorkedList.csv";     //список всех менеджеров с отработанными часами
-        public static string empFile = @"Files\employeeHoursWorkedList.csv";    //список всех сотрудников на зарплате с отработанными часами
-        public static string freeFile = @"Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
-        public static string employeeListFile = @"Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
+        private static string manFile = @"Files\managerHoursWorkedList.csv";     //список всех менеджеров с отработанными часами
+        private static string empFile = @"Files\employeeHoursWorkedList.csv";    //список всех сотрудников на зарплате с отработанными часами
+        private static string freeFile = @"Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
+        private static string employeeListFile = @"Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
 
         public static void FilesActionManager()
         {
@@ -144,7 +145,7 @@ namespace CalcSalary
         //список всех менеджеров с отработанными часами
         public static string ManagerReader()
         {
-            string str = "";
+            string str = null;
             if (Directory.Exists(@"Files"))
             {
                 if (File.Exists(manFile))
@@ -172,7 +173,7 @@ namespace CalcSalary
         //список всех штатных сотрудников с отработанными часами
         public static string EmployeeReader()
         {            
-            string str = "";
+            string str = null;
             if (Directory.Exists(@"Files"))
             {
                 if (File.Exists(empFile))
@@ -200,7 +201,7 @@ namespace CalcSalary
         //список всех внештатных сотрудников с отработанными часами
         public static string FreelancerReader()
         {            
-            string str = "";
+            string str = null;
             if (Directory.Exists(@"Files"))
             {
                 if (File.Exists(freeFile))

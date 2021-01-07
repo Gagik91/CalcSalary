@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace CalcSalary
 {
-
+    //В соответствии с ТЗ отсюда - https://docs.google.com/document/d/1kZz1ozAwNTVkIxWoyPYI_zTw6mos3CI03MyXnCxNbeM/edit# 
     class Program
     {
         static void Main(string[] args)

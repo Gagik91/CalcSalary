@@ -10,8 +10,8 @@ namespace CalcSalary
 {
     class Statistics
     {
-        public static byte period;
-        public static DateTime today = DateTime.Today;
+        private static byte period;
+        private static DateTime today = DateTime.Today;
 
         //метод выбора периода
         public static void Stats(byte per = 0)

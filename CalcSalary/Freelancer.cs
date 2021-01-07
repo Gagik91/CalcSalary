@@ -10,7 +10,6 @@ namespace CalcSalary
         public static List<Freelancer> freelancer = new List<Freelancer>();
         public Freelancer(string name, List<TimeRecord> timeRecords) : base(name, timeRecords)
         { }
-        
     }
 }
 

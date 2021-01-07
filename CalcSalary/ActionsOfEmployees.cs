@@ -8,9 +8,9 @@ namespace CalcSalary
 {
     class ActionsOfEmployees
     {
-        public static DateTime today = DateTime.Today;
-        public static decimal TotalPay = 0;
-        public static string whatWorkWas;
+        private static DateTime today = DateTime.Today;
+        private static decimal TotalPay = 0;
+        private static string whatWorkWas;
         public static decimal SalaryCalcManager(byte hr)
         {
             decimal payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
