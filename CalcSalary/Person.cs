@@ -20,7 +20,7 @@ namespace CalcSalary
         
         public static void ActionMenu()
         {
-            //goto отбрасывает сюда для повторного ввода имени
+            //goto отбрасывает сюда для повторного ввода имени, начало программы
             StartProgram:
             Console.Write("Введите Ваше имя: ");
             string name = Console.ReadLine();
