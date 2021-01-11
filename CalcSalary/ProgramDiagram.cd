@@ -13,6 +13,11 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
+      <Enum Name="CalcSalary.Settings.Roles" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Settings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
       <Class Name="CalcSalary.Settings.Manager">
         <TypeIdentifier>
           <NewMemberFileName>Settings.cs</NewMemberFileName>
@@ -37,14 +42,14 @@
   <Class Name="CalcSalary.Employee">
     <Position X="4.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAAAIAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Employee.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CalcSalary.Freelancer">
     <Position X="2.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Freelancer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -58,36 +63,36 @@
   <Class Name="CalcSalary.Person">
     <Position X="10.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Person.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CalcSalary.Staff">
     <Position X="6" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Staff.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CalcSalary.Statistics">
-    <Position X="16.5" Y="1.25" Width="1.5" />
+    <Position X="14" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABASAAAAAAAAAAAgAAAAAAAAEAAAAAgAAAAAAgAAAAA=</HashCode>
+      <HashCode>ABASAAAAAAAAAAAgAAAAAAAQEAAAAAgAAAAAAgAAAAA=</HashCode>
       <FileName>Statistics.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CalcSalary.TimeRecord">
-    <Position X="14.25" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAWACAIAAAQAIAAAAAAQAQQAAAAgwIBAAAEIAAAIAA=</HashCode>
-      <FileName>TimeRecord.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CalcSalary.ActionsOfEmployees">
     <Position X="12" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACCEAAAAACEIAgAAIAQAAQAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAACAEAAAAACAAAAAAAAAAAQAAAABAAAAAAAAAAAAAA=</HashCode>
       <FileName>ActionsOfEmployees.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CalcSalary.AllEmployeesHoursWorkedList">
+    <Position X="13" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQEAAAAAAAAAAAACAAAQAAAAAAAABAAAAIgAAAAA=</HashCode>
+      <FileName>AllEmployeesHoursWorkedList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

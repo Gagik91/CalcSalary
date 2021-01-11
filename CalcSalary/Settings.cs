@@ -6,6 +6,12 @@ namespace CalcSalary
 {
     public static class Settings
     {
+        public enum Roles 
+        {
+            Manager = 1,
+            Employee,
+            Freelancer
+        }
         public class Manager
         {
             public const decimal MonthBonus = 20000;
