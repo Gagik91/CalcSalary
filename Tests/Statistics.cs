@@ -12,7 +12,7 @@ namespace CalcSalary
     {
         private static byte period;
         private static DateTime today = DateTime.Today;
-        private static decimal TotalPay { get; set; }
+        public static decimal TotalPay { get; set; }
 
         //метод выбора периода
         public static void Stats(byte per = 0)
@@ -65,7 +65,7 @@ namespace CalcSalary
                 int sumHours = 0;   //Общие часы отработанные сотрудником за указанный период
 
                 //Получаем данные из БД и выводим их
-                var emp = db.AllEmployeesHoursWorkedList.OrderBy(n => n.Name).ToList();
+                var emp = db.AllEmployeesHoursWorkedList.Where(n => n.Date >= startDate).OrderBy(n=>n.Name).ToList();
                 for (int i = 0; i < emp.Count; i++)
                 {
                     if (i == emp.Count - 1)
@@ -96,6 +96,7 @@ namespace CalcSalary
                         tPay = 0;
                     }
                 }
+                TotalPay = amountToPaid;
                 Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} \n");
             }
         }
@@ -173,9 +174,9 @@ namespace CalcSalary
                 }
             }
         }
-        public static void DisplayAllStats()
+        public static void DisplayAllStats(byte per = 0)
         {
-            Stats();
+            Stats(per);
             CalcStatsOfAll();
         }
     }

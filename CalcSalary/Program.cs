@@ -13,6 +13,10 @@ namespace CalcSalary
         static void Main(string[] args)
         {
             Person.ActionMenu();
+            //AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            //AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            //AllEmployeesHoursWorkedList.RemoveEmployee("tf");
+            //AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Manager, "Tm1", DateTime.Now.AddDays(-10), 1);
         }
     }
 }

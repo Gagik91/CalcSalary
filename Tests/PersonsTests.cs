@@ -12,77 +12,88 @@ namespace Tests
         public void Setup()
         {
         }
+        
 
-        //тест оплаты менеджера с выбором периода
+        //тест оплаты менеджера 
         [Test]
         public void ManagerTotalPay()
         {
-            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-5), message: "test message");
-           
-            Statistics.CalcStats("test manager", 2);
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Manager,"Tm",DateTime.Now.AddDays(-1),5);
 
-            Assert.IsTrue(Manager.TotalPay == 2500);
+            Statistics.CalcStats("tm", 2);
+
+            Assert.IsTrue(Statistics.TotalPay == 6250);
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
         }
 
-        //тест оплаты штатного сотрудника с выбором периода
+        //тест оплаты штатного сотрудника 
         [Test]
         public void EmployeeTotalPay()
         {
-            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            
-            Statistics.CalcStats("test employee", 2);
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Employee, "Te", DateTime.Now.AddDays(-1), 5);
+
+            Statistics.CalcStats("te", 2);
            
-            Assert.IsTrue(Employee.TotalPay == 1500);
+            Assert.IsTrue(Statistics.TotalPay == 3750);
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
         }
 
         //тест оплаты фрилансера с выбором периода
         [Test]
         public void FreelancerTotalPay()
         {
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-1), 5);
 
-            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
+            Statistics.CalcStats("tf", 2);
             
-            Statistics.CalcStats("test freelancer", 2);
-            
-            Assert.IsTrue(Freelancer.TotalPay == 2000);
+            Assert.IsTrue(Statistics.TotalPay == 5000);
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
         }
 
-        //тест оплаты всех сотрудников с выбором периода
+        //тест оплаты всех сотрудников 
         [Test]
         public void TotalPayOfAll()
         {
-            Manager.manager.Clear();
-            Employee.employee.Clear();
-            Freelancer.freelancer.Clear();
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
 
-            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddMan("test manager", 1, dt: DateTime.Now.AddDays(-2), message: "test message");
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Manager, "Tm", DateTime.Now.AddDays(-1), 5);     //6250  -   час 1250
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Employee, "Te", DateTime.Now.AddDays(-1), 5);    //3750  -   час 750
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-1), 5);  //5000  -   час 1000
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-2), 1);  //1000  -   час 1000
 
-            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddEmp("test employee", 1, dt: DateTime.Now.AddDays(-2), message: "test message");
+            Statistics.DisplayAllStats(2);  //1    -   за вчерашний день,     2    -   за неделю(7) дней,     3    -   за месяц
 
-            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-1), message: "test message");
-            ActionsOfEmployees.AddFree("test freelancer", 1, dt: DateTime.Now.AddDays(-2), message: "test message");
-
-            Statistics.CalcStatsOfAll(2);
-
-            Assert.IsTrue(Person.TotalPay == 6000);
+            Assert.IsTrue(Statistics.TotalPay == 16000);              
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
         }
 
         //тест добавления всех типов сотрудников
         [Test]
         public void AddEmployee()
         {
-            ActionsOfEmployees.AddEmployee("test manager", selected: 1);
-            ActionsOfEmployees.AddEmployee("test employee", selected: 2);
-            ActionsOfEmployees.AddEmployee("test freelancer", selected: 3);
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
 
-            Assert.IsTrue(Manager.manager.Any(n=>n.Name == "test manager"));
-            Assert.IsTrue(Employee.employee.Any(n => n.Name == "test employee"));
-            Assert.IsTrue(Freelancer.freelancer.Any(n => n.Name == "test freelancer"));
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Manager, "Tm", DateTime.Now.AddDays(-1));     
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Employee, "Te", DateTime.Now.AddDays(-1));    
+            AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-1));
+            using (ContextWithDB db = new ContextWithDB())
+            {
+                Assert.IsTrue(db.AllEmployeesHoursWorkedList.Any(n => n.Name == "Tm"));
+                Assert.IsTrue(db.AllEmployeesHoursWorkedList.Any(n => n.Name == "Te"));
+                Assert.IsTrue(db.AllEmployeesHoursWorkedList.Any(n => n.Name == "Tf"));
+            }
+            AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            AllEmployeesHoursWorkedList.RemoveEmployee("tf");
         }
 
     }
