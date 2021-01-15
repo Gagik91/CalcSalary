@@ -9,7 +9,6 @@ namespace CalcSalary
    public class Person
     {
         public string Name { get; private set; }
-        public static decimal TotalPay { get; set; }
        
         public Person(string name)
         {

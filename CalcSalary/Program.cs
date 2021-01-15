@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System.IO;
 using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalcSalary
 {
@@ -13,10 +14,6 @@ namespace CalcSalary
         static void Main(string[] args)
         {
             Person.ActionMenu();
-            //AllEmployeesHoursWorkedList.RemoveEmployee("tm");
-            //AllEmployeesHoursWorkedList.RemoveEmployee("te");
-            //AllEmployeesHoursWorkedList.RemoveEmployee("tf");
-            //AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Manager, "Tm1", DateTime.Now.AddDays(-10), 1);
         }
     }
 }
