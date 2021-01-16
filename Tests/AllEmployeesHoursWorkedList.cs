@@ -45,7 +45,7 @@ namespace CalcSalary
                 var employee = db.AllEmployeesHoursWorkedList.Where(n => n.Name.ToLower() == name.ToLower()).ToList();
 
                 //проходим по всем объектам и удаляем совпадения
-                if (employee is not null)
+                if (employee.Count > 0)
                 {
                     foreach (var e in employee)
                     {

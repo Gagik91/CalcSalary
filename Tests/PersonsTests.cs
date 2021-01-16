@@ -23,8 +23,8 @@ namespace Tests
 
             Statistics.CalcStats("tm", 2);
 
-            Assert.IsTrue(Statistics.TotalPay == 6250);
             AllEmployeesHoursWorkedList.RemoveEmployee("tm");
+            Assert.IsTrue(Statistics.TotalPay == 6250);
         }
 
         //тест оплаты штатного сотрудника 
@@ -35,9 +35,9 @@ namespace Tests
             AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Employee, "Te", DateTime.Now.AddDays(-1), 5);
 
             Statistics.CalcStats("te", 2);
-           
-            Assert.IsTrue(Statistics.TotalPay == 3750);
+
             AllEmployeesHoursWorkedList.RemoveEmployee("te");
+            Assert.IsTrue(Statistics.TotalPay == 3750);
         }
 
         //тест оплаты фрилансера с выбором периода
@@ -48,9 +48,9 @@ namespace Tests
             AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-1), 5);
 
             Statistics.CalcStats("tf", 2);
-            
-            Assert.IsTrue(Statistics.TotalPay == 5000);
+
             AllEmployeesHoursWorkedList.RemoveEmployee("tf");
+            Assert.IsTrue(Statistics.TotalPay == 5000);
         }
 
         //тест оплаты всех сотрудников 
@@ -66,12 +66,15 @@ namespace Tests
             AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-1), 5);  //5000  -   час 1000
             AllEmployeesHoursWorkedList.AddEmployee(Settings.Roles.Freelancer, "Tf", DateTime.Now.AddDays(-2), 1);  //1000  -   час 1000
 
-            Statistics.DisplayAllStats(2);  //1    -   за вчерашний день,     2    -   за неделю(7) дней,     3    -   за месяц
+            Statistics.DisplayAllStats(3);  //1    -   за вчерашний день,     2    -   за неделю(7) дней,     3    -   за месяц
 
-            Assert.IsTrue(Statistics.TotalPay == 16000);              
+            //к тестовым прибавляются не тестовые 12750р.
+            //всего 28750
+             
             AllEmployeesHoursWorkedList.RemoveEmployee("tm");
             AllEmployeesHoursWorkedList.RemoveEmployee("te");
             AllEmployeesHoursWorkedList.RemoveEmployee("tf");
+            Assert.IsTrue(Statistics.TotalPay == 28750);
         }
 
         //тест добавления всех типов сотрудников
