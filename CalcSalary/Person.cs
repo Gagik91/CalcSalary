@@ -94,7 +94,8 @@ namespace CalcSalary
 
                                     Console.Write("Укажите имя для добавления сотрудника: ");
                                     string nameEmployee = Console.ReadLine();
-                                    ActionsOfEmployees.AddEmployee(nameEmployee, selected: selectedEmployee, addNew: true);
+                                    ActionsOfEmployees a = new ActionsOfEmployees();
+                                    a.AddEmployee(nameEmployee, selected: selectedEmployee, addNew: true);
                                 }
                                 break;
                             case 2:
@@ -108,8 +109,9 @@ namespace CalcSalary
                                 }
                                 break;
                             case 4:
-                                { 
-                                    ActionsOfEmployees.AddHours(name, true);
+                                {
+                                    ActionsOfEmployees a = new ActionsOfEmployees();
+                                    a.AddHours(name, true);
                                 }
                                 break;
                             case 5:
@@ -137,7 +139,10 @@ namespace CalcSalary
                         switch (selectedAction)
                         {
                             case 1:
-                                { ActionsOfEmployees.AddHours(name, false); }
+                                {
+                                    ActionsOfEmployees a = new ActionsOfEmployees();
+                                    a.AddHours(name, false); 
+                                }
                                 break;
                             case 2:
                                 { Statistics.DisplayStats(name, false); }
@@ -168,7 +173,10 @@ namespace CalcSalary
                         switch (selectedAction)
                         {
                             case 1:
-                                { ActionsOfEmployees.AddHours(name, false); }
+                                {
+                                    ActionsOfEmployees a = new ActionsOfEmployees();
+                                    a.AddHours(name, false); 
+                                }
                                 break;
                             case 2:
                                 { Statistics.DisplayStats(name, false); }

@@ -162,9 +162,7 @@ namespace CalcSalary
                         
                     }
                 }
-                Manager.TotalPay = tPay;
-                Employee.TotalPay = tPay;
-                Freelancer.TotalPay = tPay;
+                
                 Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
                 Console.WriteLine("___________________________\n");
             }

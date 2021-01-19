@@ -8,10 +8,10 @@ namespace CalcSalary
 {
     class ActionsOfEmployees
     {
-        private static DateTime today = DateTime.Today;
-        private static decimal TotalPay = 0;
-        private static string whatWorkWas;
-        public static decimal SalaryCalcManager(byte hr)
+        private DateTime today = DateTime.Today;
+        private decimal TotalPay = 0;
+        private string whatWorkWas;
+        public decimal SalaryCalcManager(byte hr)
         {
             decimal payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
             decimal totalPay = 0;
@@ -29,7 +29,7 @@ namespace CalcSalary
             TotalPay = totalPay;
             return TotalPay;
         }
-        public static decimal SalaryCalcEmployee(byte hr)
+        public decimal SalaryCalcEmployee(byte hr)
         {
             decimal payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
             decimal totalPay = 0;
@@ -47,7 +47,7 @@ namespace CalcSalary
             TotalPay = totalPay;
             return TotalPay;
         }
-        public static decimal SalaryCalcFreelancer(byte hr)
+        public decimal SalaryCalcFreelancer(byte hr)
         {
             decimal payPerHour = Settings.Freelancer.PayPerHour;
             decimal totalPay = 0;
@@ -58,7 +58,7 @@ namespace CalcSalary
             return TotalPay;
         }
 
-        public static void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        public void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcManager(hours);
             if (dt is null)
@@ -71,7 +71,7 @@ namespace CalcSalary
             });
             Manager.manager.Add(m);
         }
-        public static void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        public void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcEmployee(hours);
             if (dt is null)
@@ -84,7 +84,7 @@ namespace CalcSalary
             });
             Employee.employee.Add(e);
         }
-        public static void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        public void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
         {
             SalaryCalcFreelancer(hours);
             if (dt is null)
@@ -98,7 +98,7 @@ namespace CalcSalary
             Freelancer.freelancer.Add(f);
         }
 
-        public static void AddEmployee(string name, byte hours = 0, byte selected = 0, bool addNew = false)
+        public void AddEmployee(string name, byte hours = 0, byte selected = 0, bool addNew = false)
         {
             switch (selected)
             {
@@ -116,7 +116,7 @@ namespace CalcSalary
             }
         }
 
-        public static void AddHours(string name = "", bool manager = false)
+        public void AddHours(string name = "", bool manager = false)
         {
             string nameEmp;
             if (manager)
@@ -161,7 +161,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcManager(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "manager"));
-                            Files.ManagerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.Writer(Files.manFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                             break;
                         }
                     }
@@ -205,7 +205,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcEmployee(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                            Files.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.Writer(Files.empFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                             break;
                         }
                     }
@@ -248,7 +248,7 @@ namespace CalcSalary
                         {
                             TotalPay = SalaryCalcFreelancer(hr);
                             item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                            Files.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                            Files.Writer(Files.freeFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                             break;
                         }
                     }
@@ -295,7 +295,7 @@ namespace CalcSalary
                     {
                         TotalPay = SalaryCalcEmployee(hr);
                         item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                        Files.EmployeeWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                        Files.Writer(Files.empFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                         break;
                     }
                 }
@@ -337,7 +337,7 @@ namespace CalcSalary
                     {
                         TotalPay = SalaryCalcFreelancer(hr);
                         item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                        Files.FreelancerWriter(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                        Files.Writer(Files.freeFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
                         break;
                     }
                 }

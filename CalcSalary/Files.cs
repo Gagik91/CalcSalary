@@ -7,16 +7,15 @@ namespace CalcSalary
 {
     public class Files
     {
-        private static string manFile = @"Files\managerHoursWorkedList.csv";     //список всех менеджеров с отработанными часами
-        private static string empFile = @"Files\employeeHoursWorkedList.csv";    //список всех сотрудников на зарплате с отработанными часами
-        private static string freeFile = @"Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
-        private static string employeeListFile = @"Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
+        public const string manFile = @"..\..\..\Files\managerHoursWorkedList.csv";     //список всех менеджеров с отработанными часами
+        public const string empFile = @"..\..\..\Files\employeeHoursWorkedList.csv";    //список всех сотрудников на зарплате с отработанными часами
+        public const string freeFile = @"..\..\..\Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
+        public const string employeeListFile = @"..\..\..\Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
+
 
         public static void FilesActionManager()
-        {
-            //получаем массив string в каждом элементе следующая информация:
-            //дата, имя, отработанных количество часов, сообщение
-            var manData = ManagerReader().Split('\n', int.MaxValue);
+        {            
+            var manData = Reader(manFile).Split('\n');
 
             List<string> manName = new List<string>();
             List<string> manDate = new List<string>();
@@ -51,15 +50,14 @@ namespace CalcSalary
 
             for (int i = 0; i < manName.Count; i++)
             {
-                ActionsOfEmployees.AddMan(manName[i], manHours[i], DateTime.Parse(manDate[i]), manMessage[i]);
+                ActionsOfEmployees a = new ActionsOfEmployees();
+                a.AddMan(manName[i], manHours[i], DateTime.Parse(manDate[i]), manMessage[i]);
             }
         }
 
         public static void FilesActionEmployee()
         {
-            //получаем массив string в каждом элементе следующая информация:
-            //дата, имя, отработанных количество часов, сообщение
-            var empData = EmployeeReader().Split('\n', int.MaxValue);
+            var empData = Reader(empFile).Split('\n');
 
             List<string> empName = new List<string>();
             List<string> empDate = new List<string>();
@@ -94,15 +92,14 @@ namespace CalcSalary
 
             for (int i = 0; i < empName.Count; i++)
             {
-                ActionsOfEmployees.AddEmp(empName[i], empHours[i], DateTime.Parse(empDate[i]), empMessage[i]);
+                ActionsOfEmployees a = new ActionsOfEmployees();
+                a.AddEmp(empName[i], empHours[i], DateTime.Parse(empDate[i]), empMessage[i]);
             }
         }
 
         public static void FilesActionFreelancer()
-        {
-            //получаем массив string в каждом элементе следующая информация:
-            //дата, имя, отработанных количество часов, сообщение
-            var freeData = FreelancerReader().Split('\n', int.MaxValue);
+        {            
+            var freeData = Reader(freeFile).Split('\n');
 
             List<string> freeName = new List<string>();
             List<string> freeDate = new List<string>();
@@ -137,122 +134,50 @@ namespace CalcSalary
 
             for (int i = 0; i < freeName.Count; i++)
             {
-                ActionsOfEmployees.AddFree(freeName[i], freeHours[i], DateTime.Parse(freeDate[i]), freeMessage[i]);
+                ActionsOfEmployees a = new ActionsOfEmployees();
+                a.AddFree(freeName[i], freeHours[i], DateTime.Parse(freeDate[i]), freeMessage[i]);
             }
         }
-
-        //чтение из файла managerHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)    
-        //список всех менеджеров с отработанными часами
-        public static string ManagerReader()
+        
+        public static string Reader(string path)
         {
             string str = null;
-            if (Directory.Exists(@"Files"))
+            if (Directory.Exists(@"..\..\..\Files"))
             {
-                if (File.Exists(manFile))
+                if (File.Exists(path))
                 {
-                    using (StreamReader managerListStreamReader = new StreamReader(manFile, true))
+                    using (StreamReader managerListStreamReader = new StreamReader(path))
                     {
                         str = managerListStreamReader.ReadToEnd();
                     }
                 }
+
+                //Maybe not need
                 else
                 {
-                    ManagerWriter(DateTime.MinValue," ",0," ");
-                    ManagerReader();
-                }
-            }
-            else
-            {
-                Directory.CreateDirectory(manFile);
-                ManagerReader();
-            }
-            return str;
-        }
-
-        //чтение из файла employeeHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)
-        //список всех штатных сотрудников с отработанными часами
-        public static string EmployeeReader()
-        {            
-            string str = null;
-            if (Directory.Exists(@"Files"))
-            {
-                if (File.Exists(empFile))
-                {
-                    using (StreamReader employeeListStreamReader = new StreamReader(empFile, true))
-                    {
-                        str = employeeListStreamReader.ReadToEnd();
+                    using (File.Create(path));
+                    using (StreamReader managerListStreamReader = new StreamReader(path))
+                    {                        
+                        str = managerListStreamReader.ReadToEnd();
                     }
                 }
-                else
-                {
-                    EmployeeWriter(DateTime.MinValue, " ", 0, " ");
-                    EmployeeReader();
-                }
             }
             else
             {
-                Directory.CreateDirectory(empFile);
-                EmployeeReader();
+                Directory.CreateDirectory(@"..\..\..\Files");
+                Reader(path);
             }
             return str;
         }
-
-        //чтение из файла freelancerHoursWorkedList.csv с проверкой на существование папки(если нет создать) и существование файла (если нет создать)
-        //список всех внештатных сотрудников с отработанными часами
-        public static string FreelancerReader()
-        {            
-            string str = null;
-            if (Directory.Exists(@"Files"))
-            {
-                if (File.Exists(freeFile))
-                {
-                    using (StreamReader freelancerListStreamReader = new StreamReader(freeFile, true))
-                    {
-                        str = freelancerListStreamReader.ReadToEnd();
-                    }
-                }
-                else
-                {
-                    FreelancerWriter(DateTime.MinValue, " ", 0, " ");
-                    FreelancerReader();
-                }
-            }
-            else
-            {
-                Directory.CreateDirectory(freeFile);
-                FreelancerReader();
-            }
-            return str;
-        }
-
-        //запись в файл managerHoursWorkedList.csv    -   список всех менеджеров с отработанными часами
-        public static void ManagerWriter(DateTime date, string name, byte hours, string message)
+        public static void Writer(string path, DateTime date, string name, byte hours, string message)
         {
-            using (StreamWriter managerListStreamWriter = new StreamWriter(manFile, true))
+            using (StreamWriter sw = new StreamWriter(path, true))
             {
-                managerListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
+                sw.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
             }
         }
 
-        //запись в файл employeeHoursWorkedList.csv    -   список всех штатных сотрудников с отработанными часами
-        public static void EmployeeWriter(DateTime date, string name, byte hours, string message)
-        {
-            using (StreamWriter employeeListStreamWriter = new StreamWriter(empFile, true))
-            {
-                employeeListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
-            }
-        }
-
-        //запись в файл freelancerHoursWorkedList.csv    -   список всех внештатных сотрудников с отработанными часами
-        public static void FreelancerWriter(DateTime date, string name, byte hours, string message)
-        {
-            using (StreamWriter freelancerListStreamWriter = new StreamWriter(freeFile, true))
-            {
-                freelancerListStreamWriter.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
-            }
-        }
-
-        //запись в файл employeeListFile.csv    -   список всех сотрудников с указанием ролей
+        
         public static void EmployeeListWriter(string name, string role)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))

@@ -27,18 +27,19 @@ namespace CalcSalary
             {
                 if (role == "manager")
                 {
-                    Files.ManagerWriter(Date, Name, Hours, Message);
-                    Files.ManagerReader();
+                    Files.Writer(Files.manFile, Date, Name, Hours, Message);
+                    //Files.ManagerWriter(Date, Name, Hours, Message);
+                    Files.Reader(Files.manFile);
                 }
                 else if (role == "employee")
                 {
-                    Files.EmployeeWriter(Date, Name, Hours, Message);
-                    Files.EmployeeReader();
+                    Files.Writer(Files.empFile, Date, Name, Hours, Message);
+                    Files.Reader(Files.empFile);
                 }
                 else if (role == "freelancer")
                 {
-                    Files.FreelancerWriter(Date, Name, Hours, Message);
-                    Files.FreelancerReader();
+                    Files.Writer(Files.freeFile, Date, Name, Hours, Message);
+                    Files.Reader(Files.freeFile);
                 }
                 Files.EmployeeListWriter(Name, role);
             }
