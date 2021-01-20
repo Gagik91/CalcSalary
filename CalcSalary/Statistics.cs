@@ -128,27 +128,6 @@ namespace CalcSalary
 
             Console.WriteLine($"За указанный период отработано {tupleData.Sum(s=>s.hours)} часов, сумма к выплате {tupleData.Sum(s => s.totalPay)} \n");
 
-        }
-        public int CountOfEmployee()
-        {
-            int count = 0;
-            int col = 2;
-            string personNames = "";
-            using (TextFieldParser parser = new TextFieldParser(Files.employeeListFile))
-            {
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
-                while (!parser.EndOfData)
-                {
-                    string[] fields = parser.ReadFields();
-                    if (!personNames.Contains(fields[0]))
-                    {
-                        personNames += fields[0] + "\n";
-                        count += fields.Length;
-                    }
-                }
-            }
-            return count / col;
-        }
+        }        
     }
 }
