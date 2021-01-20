@@ -9,192 +9,186 @@ namespace CalcSalary
    public class Person
     {
         public string Name { get; private set; }
-        public static decimal TotalPay { get; set; }
-        public List<TimeRecord> TimeRecords { get; private set; }
+        public decimal TotalPay { get; set; }
+        
 
-        public Person(string name, List<TimeRecord> timeRecords)
+        public Person(string name)
         {
             Name = name;
-            TimeRecords = timeRecords;
         }
+        public Person()
+        {}
         
         public static void ActionMenu()
         {
-            //goto отбрасывает сюда для повторного ввода имени, начало программы
-            StartProgram:
+            bool exit = false;
+            
             Console.Write("Введите Ваше имя: ");
             string name = Console.ReadLine();
-            string role = null;
+            ActionsOfEmployees actionOfEmp = new ActionsOfEmployees();
+            Settings.Role? role = actionOfEmp.RoleIdentification(name);
             byte selectedAction;
-            bool exit = false;
+            Statistics stat = new Statistics();
+
             //проверяем по имени к какой роли относится сотрудник и присваиваем соответствующее значение
-            if (Manager.manager.Any(n => n.Name.ToLower() == name.ToLower()))
-            { role = "Руководитель"; }
-            else if (Employee.employee.Any(n => n.Name.ToLower() == name.ToLower()))
-            { role = "Сотрудник на зарплате"; }
-            else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == name.ToLower()))
-            { role = "Внештатный сотрудник"; }
-            else
-            { 
-                Console.WriteLine($"Сотрудник с именем {name} не найден, нажмите 1 для выхода или введите имя");
-                if (Console.ReadLine() == "1")
+
+            while (role == 0)
+            {
+                Console.Write($"Сотрудник с именем {name} не найден, нажмите 1 для выхода или введите имя: ");
+                name = Console.ReadLine();
+                Console.WriteLine("\n");
+                if (name == "1")
                 {
-                    return;
+                    exit = true;
+                    break;
                 }
-                //отбрасывает для повторного ввода имени
-                goto StartProgram;
+                else 
+                {
+                    role = actionOfEmp.RoleIdentification(name);
+                }
             }
-            
+
             Console.WriteLine($"Здравствуйте, {name}!");
             Console.WriteLine($"Ваша роль: {role}");
-            
-            //goto отбрасывает сюда, для зацикленности меню пользователя
-            StartMenu: 
-            Console.WriteLine("\nВыберите желаемое действие:\n");
-
-            switch (role)
+            while (!exit)
             {
-                case "Руководитель":
-                    {
-                        Console.WriteLine("(1) Добавить сотрудника: ");
-                        Console.WriteLine("(2) Просмотреть отчет по всем сотрудникам: ");
-                        Console.WriteLine("(3) Просмотреть отчет по конкретному сотруднику: ");
-                        Console.WriteLine("(4) Добавить часы работы: ");
-                        Console.WriteLine("(5) Выход из программы: ");
-                        selectedAction = 0;
-                        while (selectedAction < 1 || selectedAction > 5)
+
+                Console.WriteLine("\nВыберите желаемое действие:\n");
+
+                switch (role)
+                {
+                    case Settings.Role.Manager:
                         {
-                            try
+                            Console.WriteLine("(1) Добавить сотрудника: ");
+                            Console.WriteLine("(2) Просмотреть отчет по всем сотрудникам: ");
+                            Console.WriteLine("(3) Просмотреть отчет по конкретному сотруднику: ");
+                            Console.WriteLine("(4) Добавить часы работы: ");
+                            Console.WriteLine("(5) Выход из программы: ");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 5)
                             {
-                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                selectedAction = byte.Parse(Console.ReadLine());
-                                Console.WriteLine("\n");
-                            }
-                            catch { continue; }
-                        }
-                        switch (selectedAction)
-                        {
-                            case 1:
+                                try
                                 {
-                                    Console.WriteLine("Укажите должность для добавления сотрудника: ");
-                                    Console.WriteLine("Руководитель - нажмите 1: ");
-                                    Console.WriteLine("Сотрудник на зарплате - нажмите 2: ");
-                                    Console.WriteLine("Внештатный сотрудник - нажмите 3: ");
-                                    byte selectedEmployee = 0;
-                                    while (selectedEmployee < 1 || selectedEmployee > 3)
+                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                    selectedAction = byte.Parse(Console.ReadLine());
+                                    Console.WriteLine("\n");
+                                }
+                                catch { continue; }
+                            }
+                            switch (selectedAction)
+                            {
+                                case 1:
                                     {
-                                        try
+                                        Console.WriteLine("Укажите должность для добавления сотрудника: ");
+                                        Console.WriteLine("Руководитель - нажмите 1: ");
+                                        Console.WriteLine("Сотрудник на зарплате - нажмите 2: ");
+                                        Console.WriteLine("Внештатный сотрудник - нажмите 3: ");
+                                        Settings.Role selectedEmployee = 0;
+                                        while (selectedEmployee < (Settings.Role)1 || selectedEmployee > (Settings.Role)3)
                                         {
-                                            Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                            selectedEmployee = byte.Parse(Console.ReadLine());
-                                            Console.WriteLine("\n");
+                                            try
+                                            {
+                                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                                selectedEmployee = (Settings.Role)int.Parse(Console.ReadLine());
+                                                Console.WriteLine("\n");
+                                            }
+                                            catch { continue; }
                                         }
-                                        catch { continue; }
+
+                                        Console.Write("Укажите имя для добавления сотрудника: ");
+                                        string nameEmployee = Console.ReadLine();
+                                        actionOfEmp.AddEmployee(nameEmployee, selected: selectedEmployee);
                                     }
-
-                                    Console.Write("Укажите имя для добавления сотрудника: ");
-                                    string nameEmployee = Console.ReadLine();
-                                    ActionsOfEmployees a = new ActionsOfEmployees();
-                                    a.AddEmployee(nameEmployee, selected: selectedEmployee, addNew: true);
-                                }
-                                break;
-                            case 2:
-                                { 
-                                    Statistics.DisplayAllStats();
-                                }
-                                break;
-                            case 3:
-                                { 
-                                    Statistics.DisplayStats(manager: true);
-                                }
-                                break;
-                            case 4:
-                                {
-                                    ActionsOfEmployees a = new ActionsOfEmployees();
-                                    a.AddHours(name, true);
-                                }
-                                break;
-                            case 5:
-                                { exit = true; }
-                                break;
-                        }
-                    }
-                    break;
-                case "Сотрудник на зарплате":
-                    {
-                        Console.WriteLine("(1) Добавить часы работы: ");
-                        Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
-                        Console.WriteLine("(3) Выход из программы: ");
-                        selectedAction = 0;
-                        while (selectedAction < 1 || selectedAction > 3)
-                        {
-                            try
-                            {
-                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                selectedAction = byte.Parse(Console.ReadLine());
-                                Console.WriteLine("\n");
+                                    break;
+                                case 2:
+                                    {
+                                        stat.DisplayAllStats();
+                                    }
+                                    break;
+                                case 3:
+                                    {
+                                        stat.DisplayStats(name, role.Value);
+                                    }
+                                    break;
+                                case 4:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 5:
+                                    { exit = true; }
+                                    break;
                             }
-                            catch { continue; }
                         }
-                        switch (selectedAction)
+                        break;
+                    case Settings.Role.Employee:
                         {
-                            case 1:
-                                {
-                                    ActionsOfEmployees a = new ActionsOfEmployees();
-                                    a.AddHours(name, false); 
-                                }
-                                break;
-                            case 2:
-                                { Statistics.DisplayStats(name, false); }
-                                break;
-                            case 3:
-                                { exit = true; }
-                                break;
-                        }
-                    }
-                    break;
-                case "Внештатный сотрудник":
-                    {
-                        Console.WriteLine("(1) Добавить часы работы: ");
-                        Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
-                        Console.WriteLine("(3) Выход из программы:");
-                        selectedAction = 0;
-                        while (selectedAction < 1 || selectedAction > 3)
-                        {
-                            try
+                            Console.WriteLine("(1) Добавить часы работы: ");
+                            Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
+                            Console.WriteLine("(3) Выход из программы: ");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 3)
                             {
-                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                selectedAction = byte.Parse(Console.ReadLine());
-                                Console.WriteLine("\n");
-                            }
-                            catch { continue; }
-                        }
-
-                        switch (selectedAction)
-                        {
-                            case 1:
+                                try
                                 {
-                                    ActionsOfEmployees a = new ActionsOfEmployees();
-                                    a.AddHours(name, false); 
+                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                    selectedAction = byte.Parse(Console.ReadLine());
+                                    Console.WriteLine("\n");
                                 }
-                                break;
-                            case 2:
-                                { Statistics.DisplayStats(name, false); }
-                                break;
-                            case 3:
-                                { exit = true; }
-                                break;
+                                catch { continue; }
+                            }
+                            switch (selectedAction)
+                            {
+                                case 1:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 2:
+                                    { stat.DisplayStats(name, role.Value); }
+                                    break;
+                                case 3:
+                                    { exit = true; }
+                                    break;
+                            }
                         }
-                    }
-                    break;
-                default:
-                    break;
-            }
-            //если role не null, то отбросить к точке начала меню - StartMenu:
-            if (role is not null && exit is false)
-            {
-                //goto отбрасывает на начало меню, для зацикленности
-                goto StartMenu;
+                        break;
+                    case Settings.Role.Freelancer:
+                        {
+                            Console.WriteLine("(1) Добавить часы работы: ");
+                            Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
+                            Console.WriteLine("(3) Выход из программы:");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 3)
+                            {
+                                try
+                                {
+                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                    selectedAction = byte.Parse(Console.ReadLine());
+                                    Console.WriteLine("\n");
+                                }
+                                catch { continue; }
+                            }
+
+                            switch (selectedAction)
+                            {
+                                case 1:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 2:
+                                    { stat.DisplayStats(name, role.Value); }
+                                    break;
+                                case 3:
+                                    { exit = true; }
+                                    break;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

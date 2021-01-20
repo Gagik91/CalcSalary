@@ -12,10 +12,13 @@ namespace CalcSalary
     {
         static void Main(string[] args)
         {
-            Files.FilesActionManager();
-            Files.FilesActionEmployee();
-            Files.FilesActionFreelancer();
+            //Files.FilesActionManager();
+            //Files.FilesActionEmployee();
+            //Files.FilesActionFreelancer();
             Person.ActionMenu();
+            
+            
+            //Console.WriteLine(stat.CountOfEmployee()); ;
         }
     }
 }

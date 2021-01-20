@@ -6,9 +6,8 @@ namespace CalcSalary
 {
     public class Employee : Staff
     {
-        public new decimal TotalPay { get; set; }
-        public static List<Employee> employee = new List<Employee>();        
-        public Employee(string name, List<TimeRecord> timeRecords) : base(name, Settings.Employee.MonthSalary, timeRecords)
+        public new decimal TotalPay { get; set; }   
+        public Employee(string name) : base(name, Settings.Employee.MonthSalary)
         { }
     }
 }

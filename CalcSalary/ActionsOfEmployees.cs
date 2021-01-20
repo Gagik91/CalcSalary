@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,34 @@ namespace CalcSalary
         private DateTime today = DateTime.Today;
         private decimal TotalPay = 0;
         private string whatWorkWas;
-        public decimal SalaryCalcManager(byte hr)
-        {
-            decimal payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
-            decimal totalPay = 0;
-            decimal bonusPerDay = (Settings.Manager.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
 
-            if (hr <= Settings.WorkHourInDay)
+        public decimal SalaryCalc(byte hr, Settings.Role r)
+        {
+            decimal payPerHour = 0;
+            decimal totalPay = 0;
+            decimal bonusPerDay = 0;
+            
+            if (r == Settings.Role.Manager)
+            {
+                payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
+                bonusPerDay = (Settings.Manager.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
+            }
+            else if (r == Settings.Role.Employee)
+            {
+                payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
+                bonusPerDay = (Settings.Employee.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
+            }
+            else if (r == Settings.Role.Freelancer)
+            {
+                payPerHour = Settings.Freelancer.PayPerHour;
+                totalPay += hr * payPerHour;
+            }
+
+            if (hr <= Settings.WorkHourInDay && (r == Settings.Role.Manager || r == Settings.Role.Employee))
             {
                 totalPay += hr * payPerHour;
             }
-            else // переработка
+            else if(hr > Settings.WorkHourInDay && (r == Settings.Role.Manager || r == Settings.Role.Employee))// переработка
             {
                 totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
             }
@@ -29,240 +47,168 @@ namespace CalcSalary
             TotalPay = totalPay;
             return TotalPay;
         }
-        public decimal SalaryCalcEmployee(byte hr)
-        {
-            decimal payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
-            decimal totalPay = 0;
-            decimal bonusPerDay = (Settings.Employee.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
 
-            if (hr <= Settings.WorkHourInDay)
-            {
-                totalPay += hr * payPerHour;
-            }
-            else // переработка
-            {
-                totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
-            }
+        //public decimal SalaryCalcManager(byte hr)
+        //{
+        //    decimal payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
+        //    decimal totalPay = 0;
+        //    decimal bonusPerDay = (Settings.Manager.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
 
-            TotalPay = totalPay;
-            return TotalPay;
-        }
-        public decimal SalaryCalcFreelancer(byte hr)
-        {
-            decimal payPerHour = Settings.Freelancer.PayPerHour;
-            decimal totalPay = 0;
+        //    if (hr <= Settings.WorkHourInDay)
+        //    {
+        //        totalPay += hr * payPerHour;
+        //    }
+        //    else // переработка
+        //    {
+        //        totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
+        //    }
 
-            totalPay += hr * payPerHour;
+        //    TotalPay = totalPay;
+        //    return TotalPay;
+        //}
+        //public decimal SalaryCalcEmployee(byte hr)
+        //{
+        //    decimal payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
+        //    decimal totalPay = 0;
+        //    decimal bonusPerDay = (Settings.Employee.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
 
-            TotalPay = totalPay;
-            return TotalPay;
-        }
+        //    if (hr <= Settings.WorkHourInDay)
+        //    {
+        //        totalPay += hr * payPerHour;
+        //    }
+        //    else // переработка
+        //    {
+        //        totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
+        //    }
 
-        public void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        {
-            SalaryCalcManager(hours);
-            if (dt is null)
-            {
-                dt = DateTime.Now;
-            }
-            Manager m = new Manager(name, new List<TimeRecord>()
-            {
-                    new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "manager", newMan)
-            });
-            Manager.manager.Add(m);
-        }
-        public void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        {
-            SalaryCalcEmployee(hours);
-            if (dt is null)
-            {
-                dt = DateTime.Now;
-            }
-            Employee e = new Employee(name, new List<TimeRecord>()
-            {
-                new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "employee", newMan)
-            });
-            Employee.employee.Add(e);
-        }
-        public void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        {
-            SalaryCalcFreelancer(hours);
-            if (dt is null)
-            {
-                dt = DateTime.Now;
-            }
-            Freelancer f = new Freelancer(name, new List<TimeRecord>()
-            {
-                new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "freelancer", newMan)
-            });
-            Freelancer.freelancer.Add(f);
-        }
+        //    TotalPay = totalPay;
+        //    return TotalPay;
+        //}
+        //public decimal SalaryCalcFreelancer(byte hr)
+        //{
+        //    decimal payPerHour = Settings.Freelancer.PayPerHour;
+        //    decimal totalPay = 0;
 
-        public void AddEmployee(string name, byte hours = 0, byte selected = 0, bool addNew = false)
-        {
+        //    totalPay += hr * payPerHour;
+
+        //    TotalPay = totalPay;
+        //    return TotalPay;
+        //}
+
+        //public void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        //{
+        //    SalaryCalcManager(hours);
+        //    if (dt is null)
+        //    {
+        //        dt = DateTime.Now;
+        //    }
+        //    Manager m = new Manager(name, new List<TimeRecord>()
+        //    {
+        //            new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "manager", newMan)
+        //    });
+        //    Manager.manager.Add(m);
+        //}
+        //public void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        //{
+        //    SalaryCalcEmployee(hours);
+        //    if (dt is null)
+        //    {
+        //        dt = DateTime.Now;
+        //    }
+        //    Employee e = new Employee(name, new List<TimeRecord>()
+        //    {
+        //        new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "employee", newMan)
+        //    });
+        //    Employee.employee.Add(e);
+        //}
+        //public void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
+        //{
+        //    SalaryCalcFreelancer(hours);
+        //    if (dt is null)
+        //    {
+        //        dt = DateTime.Now;
+        //    }
+        //    Freelancer f = new Freelancer(name, new List<TimeRecord>()
+        //    {
+        //        new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "freelancer", newMan)
+        //    });
+        //    Freelancer.freelancer.Add(f);
+        //}
+
+        public void AddEmployee(string name, byte hours = 0, Settings.Role selected = 0)
+        {            
             switch (selected)
             {
-                case 1:
-                    { AddMan(name, hours, newMan: addNew); }
+                case Settings.Role.Manager:
+                    { 
+                        Files.Writer(Files.manFile,DateTime.Now.AddDays(0),name,hours,"First Day");
+                        Files.EmployeeListWriter(name, "Manager");
+                    }
                     break;
-                case 2:
-                    { AddEmp(name, hours, newMan: addNew); }
+                case Settings.Role.Employee:
+                    { 
+                        Files.Writer(Files.empFile, DateTime.Now.AddDays(0), name, hours, "First Day");
+                        Files.EmployeeListWriter(name, "Employee");
+                    }
                     break;
-                case 3:
-                    { AddFree(name, hours, newMan: addNew); }
+                case Settings.Role.Freelancer:
+                    { 
+                        Files.Writer(Files.freeFile, DateTime.Now.AddDays(0), name, hours, "First Day");
+                        Files.EmployeeListWriter(name, "Freelancer");
+                    }
                     break;
                 default:
                     break;
             }
         }
 
-        public void AddHours(string name = "", bool manager = false)
+        public void AddHours(string name, Settings.Role role)
         {
-            string nameEmp;
-            if (manager)
+            string nameEmp = "";
+            Settings.Role roleAddedHours;
+            string path = "";
+            byte hr = 0;
+            if (role == Settings.Role.Manager)
             {
                 Console.Write("Укажите имя сотрудника для добавления часов работы: ");
                 nameEmp = Console.ReadLine();
-                if (Manager.manager.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+                roleAddedHours = RoleIdentification(nameEmp);
+                
+                if (roleAddedHours == Settings.Role.Manager)
                 {
-                    nameEmp = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).FirstOrDefault().Name;
-                    Console.WriteLine("\n\nУкажите в какой день добавить часы (шаблон: 01.01.2020)");
-                    TimeSpan day = new TimeSpan(-1); 
-
-                    while (day.TotalDays < 0 || day.TotalDays > 365)
-                    {
-                        try
-                        {
-                            Console.Write("Часы можно добавить в любой день в пределах года: ");
-                            day = today - DateTime.Parse(Console.ReadLine());
-                        }                        
-                        catch 
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nВведите количество часов для добавления сотруднику {nameEmp}");
-                    byte hr = 0;
-                    while (hr < 1 || hr > 24)
-                    {
-                        try
-                        {
-                            Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
-                            hr = byte.Parse(Console.ReadLine());
-                        }
-                        catch  
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nУкажите какую работу выполнял {nameEmp}");
-                    whatWorkWas = Console.ReadLine();
-                    foreach (var item in Manager.manager)
-                    {
-                        if (item.Name.ToLower() == nameEmp.ToLower())
-                        {
-                            TotalPay = SalaryCalcManager(hr);
-                            item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "manager"));
-                            Files.Writer(Files.manFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
-                            break;
-                        }
-                    }
+                    path = Files.manFile;
                 }
-
-                else if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+                else if (roleAddedHours == Settings.Role.Employee)
                 {
-                    nameEmp = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).FirstOrDefault().Name;
-                    Console.WriteLine("\n\nУкажите в какой день добавить часы (шаблон: 01.01.2020)");
-                    TimeSpan day = new TimeSpan(-1);
-
-                    while (day.TotalDays < 0 || day.TotalDays > 365)
-                    {
-                        try
-                        {
-                            Console.Write("Часы можно добавить в любой день в пределах года: ");
-                            day = today - DateTime.Parse(Console.ReadLine());
-                        }
-                        catch
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nВведите количество часов для добавления сотруднику {nameEmp}");
-                    byte hr = 0;
-                    while (hr < 1 || hr > 24)
-                    {
-                        try
-                        {
-                            Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
-                            hr = byte.Parse(Console.ReadLine());
-                        }
-                        catch
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nУкажите какую работу выполнял {nameEmp}");
-                    whatWorkWas = Console.ReadLine();
-                    foreach (var item in Employee.employee)
-                    {
-                        if (item.Name.ToLower() == nameEmp.ToLower())
-                        {
-                            TotalPay = SalaryCalcEmployee(hr);
-                            item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                            Files.Writer(Files.empFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
-                            break;
-                        }
-                    }
+                    path = Files.empFile;
                 }
-
-                else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == nameEmp.ToLower()))
+                else if (roleAddedHours == Settings.Role.Freelancer)
                 {
-                    nameEmp = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).FirstOrDefault().Name;
-                    Console.WriteLine("\n\nУкажите в какой день добавить часы (шаблон: 01.01.2020)");
-                    TimeSpan day = new TimeSpan(-1);
-                    while (day.TotalDays < 0 || day.TotalDays > 365)
-                    {
-                        try
-                        {
-                            Console.Write("Часы можно добавить в любой день в пределах года: ");
-                            day = today - DateTime.Parse(Console.ReadLine());
-                        }
-                        catch
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nВведите количество часов для добавления сотруднику {nameEmp}");
-                    byte hr = 0;
-                    while (hr < 1 || hr > 24)
-                    {
-                        try
-                        {
-                            Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
-                            hr = byte.Parse(Console.ReadLine());
-                        }
-                        catch
-                        { continue; }
-                    }
-
-                    Console.WriteLine($"\n\nУкажите какую работу выполнял {nameEmp}");
-                    whatWorkWas = Console.ReadLine();
-                    foreach (var item in Freelancer.freelancer)
-                    {
-                        if (item.Name.ToLower() == nameEmp.ToLower())
-                        {
-                            TotalPay = SalaryCalcFreelancer(hr);
-                            item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                            Files.Writer(Files.freeFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
-                            break;
-                        }
-                    }
+                    path = Files.freeFile;
                 }
                 else
                 {
                     Console.WriteLine("\n\nСотрудник с таким именем отсутствует\n");
+                    return;
                 }
+
             }
-            nameEmp = name;
-            if (Employee.employee.Any(n => n.Name.ToLower() == nameEmp.ToLower()) && manager == false)
+            else if (role == Settings.Role.Employee)
+            {
+                path = Files.empFile;
+                nameEmp = name;
+            }
+            else if (role == Settings.Role.Freelancer)
+            {
+                path = Files.freeFile;
+                nameEmp = name;
+            }
+            
+            TimeSpan day = new TimeSpan(-1);
+            if (role != Settings.Role.Freelancer)
             {
                 Console.WriteLine("\n\nУкажите в какой день добавить часы (шаблон: 01.01.2020)");
-                TimeSpan day = new TimeSpan(-1);
+
                 while (day.TotalDays < 0 || day.TotalDays > 365)
                 {
                     try
@@ -273,75 +219,74 @@ namespace CalcSalary
                     catch
                     { continue; }
                 }
-
-                Console.WriteLine($"\n\nВведите количество часов для добавления");
-                byte hr = 0;
-                while (hr < 1 || hr > 24)
-                {
-                    try
-                    {
-                        Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
-                        hr = byte.Parse(Console.ReadLine());
-                    }
-                    catch
-                    { continue; }
-                }
-
-                Console.WriteLine($"\n\nУкажите какую работу выполняли:");
-                whatWorkWas = Console.ReadLine();
-                foreach (var item in Employee.employee)
-                {
-                    if (item.Name.ToLower() == nameEmp.ToLower())
-                    {
-                        TotalPay = SalaryCalcEmployee(hr);
-                        item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "employee"));
-                        Files.Writer(Files.empFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
-                        break;
-                    }
-                }
             }
-            else if (Freelancer.freelancer.Any(n => n.Name.ToLower() == nameEmp.ToLower()) && manager == false)
+
+            else if (role == Settings.Role.Freelancer)
             {
                 Console.WriteLine($"\n\nУкажите в какой день добавить часы (шаблон: 01.01.2020) самое ранее за {DateTime.Now.AddDays(-2).ToShortDateString()}: ");
-                TimeSpan day = new TimeSpan(-1);
                 while (day.TotalDays < 0 || day.TotalDays > 2)
                 {
                     try
                     {
-                        Console.Write("Нужно ввести часы в пределах 2 дней: ");
+                        Console.Write("Нужно ввести день в пределах последних 2 суток: ");
                         day = today - DateTime.Parse(Console.ReadLine());
                     }
                     catch
                     { continue; }
                 }
+            }
 
-                Console.WriteLine($"\n\nВведите количество часов для добавления");
-                byte hr = 0;
-                while (hr < 1 || hr > 24)
+            Console.WriteLine($"\n\nВведите количество часов для добавления");
+            while (hr < 1 || hr > 24)
+            {
+                try
                 {
-                    try
-                    {
-                        Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
-                        hr = byte.Parse(Console.ReadLine());
-                    }
-                    catch
-                    { continue; }
+                    Console.Write("Количество часов можно ввести в пределах суток от 1 часа и до 24 часов: ");
+                    hr = byte.Parse(Console.ReadLine());
                 }
+                catch
+                { continue; }
+            }
 
-                var nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower());
-                Console.WriteLine($"\n\nУкажите какую работу выполняли:");
-                whatWorkWas = Console.ReadLine();
-                foreach (var item in Freelancer.freelancer)
+            Console.WriteLine($"\n\nУкажите выполненную работу");
+            whatWorkWas = Console.ReadLine();
+
+            if (path.Length > 0)
+            {
+                Files.Writer(path, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+            }                
+                        
+        }
+
+        public Settings.Role RoleIdentification(string name)
+        {
+            Settings.Role? role = null;
+            using (TextFieldParser parser = new TextFieldParser(Files.employeeListFile))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                while (!parser.EndOfData)
                 {
-                    if (item.Name.ToLower() == nameEmp.ToLower())
+                    string[] fields = parser.ReadFields();
+                    if (fields[0].ToLower() == name.ToLower())
                     {
-                        TotalPay = SalaryCalcFreelancer(hr);
-                        item.TimeRecords.Add(new TimeRecord(DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas, TotalPay, "freelancer"));
-                        Files.Writer(Files.freeFile, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                        if (fields[1].ToLower() == "Manager".ToLower())
+                        {
+                            role = Settings.Role.Manager;
+                        }
+                        else if (fields[1].ToLower() == "Employee".ToLower())
+                        {
+                            role = Settings.Role.Employee;
+                        }
+                        else if (fields[1].ToLower() == "Freelancer".ToLower())
+                        {
+                            role = Settings.Role.Freelancer;
+                        }
                         break;
-                    }
+                    }                           
                 }
             }
+            return role.GetValueOrDefault();
         }
     }
 }
