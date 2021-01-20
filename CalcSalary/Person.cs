@@ -29,8 +29,6 @@ namespace CalcSalary
             byte selectedAction;
             Statistics stat = new Statistics();
 
-            //проверяем по имени к какой роли относится сотрудник и присваиваем соответствующее значение
-
             while (role == 0)
             {
                 Console.Write($"Сотрудник с именем {name} не найден, нажмите 1 для выхода или введите имя: ");

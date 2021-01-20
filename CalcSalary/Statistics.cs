@@ -12,7 +12,6 @@ namespace CalcSalary
     class Statistics
     {
         private DateTime today = DateTime.Today;
-
         public byte Stats()
         {
             byte period = 0;
@@ -130,7 +129,6 @@ namespace CalcSalary
             }
 
             Console.WriteLine($"За указанный период отработано {tupleData.Sum(s=>s.hours)} часов, сумма к выплате {tupleData.Sum(s => s.totalPay)} \n");
-
         }        
     }
 }
