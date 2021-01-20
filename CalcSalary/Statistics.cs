@@ -117,8 +117,11 @@ namespace CalcSalary
             }
             
             Files f = new Files();
-            var tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).Where(n => n.dT >= startDate).GroupBy(n => n.name).
-                Select(t => new { name = t.Key, hours = t.Sum(t => t.hours), totalPay = t.Sum(t => t.pay) }).ToList();            
+            var tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).
+                Where(n => n.dT >= startDate).GroupBy(n => n.name).
+                Select(t => new { name = t.Key, hours = t.
+                Sum(t => t.hours), totalPay = t.
+                Sum(t => t.pay) }).ToList();            
 
             for (int i = 0; i < tupleData.Count; i++)
             {

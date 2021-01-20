@@ -10,7 +10,6 @@ namespace CalcSalary
     class ActionsOfEmployees
     {
         private DateTime today = DateTime.Today;
-        private decimal TotalPay = 0;
         private string whatWorkWas;
 
         public decimal SalaryCalc(byte hr, Settings.Role r)
@@ -43,97 +42,9 @@ namespace CalcSalary
             {
                 totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
             }
-
-            TotalPay = totalPay;
-            return TotalPay;
+                        
+            return totalPay;
         }
-
-        //public decimal SalaryCalcManager(byte hr)
-        //{
-        //    decimal payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
-        //    decimal totalPay = 0;
-        //    decimal bonusPerDay = (Settings.Manager.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
-
-        //    if (hr <= Settings.WorkHourInDay)
-        //    {
-        //        totalPay += hr * payPerHour;
-        //    }
-        //    else // переработка
-        //    {
-        //        totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
-        //    }
-
-        //    TotalPay = totalPay;
-        //    return TotalPay;
-        //}
-        //public decimal SalaryCalcEmployee(byte hr)
-        //{
-        //    decimal payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
-        //    decimal totalPay = 0;
-        //    decimal bonusPerDay = (Settings.Employee.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
-
-        //    if (hr <= Settings.WorkHourInDay)
-        //    {
-        //        totalPay += hr * payPerHour;
-        //    }
-        //    else // переработка
-        //    {
-        //        totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
-        //    }
-
-        //    TotalPay = totalPay;
-        //    return TotalPay;
-        //}
-        //public decimal SalaryCalcFreelancer(byte hr)
-        //{
-        //    decimal payPerHour = Settings.Freelancer.PayPerHour;
-        //    decimal totalPay = 0;
-
-        //    totalPay += hr * payPerHour;
-
-        //    TotalPay = totalPay;
-        //    return TotalPay;
-        //}
-
-        //public void AddMan(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        //{
-        //    SalaryCalcManager(hours);
-        //    if (dt is null)
-        //    {
-        //        dt = DateTime.Now;
-        //    }
-        //    Manager m = new Manager(name, new List<TimeRecord>()
-        //    {
-        //            new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "manager", newMan)
-        //    });
-        //    Manager.manager.Add(m);
-        //}
-        //public void AddEmp(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        //{
-        //    SalaryCalcEmployee(hours);
-        //    if (dt is null)
-        //    {
-        //        dt = DateTime.Now;
-        //    }
-        //    Employee e = new Employee(name, new List<TimeRecord>()
-        //    {
-        //        new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "employee", newMan)
-        //    });
-        //    Employee.employee.Add(e);
-        //}
-        //public void AddFree(string name, byte hours, DateTime? dt = null, string message = "Start work", bool newMan = false)
-        //{
-        //    SalaryCalcFreelancer(hours);
-        //    if (dt is null)
-        //    {
-        //        dt = DateTime.Now;
-        //    }
-        //    Freelancer f = new Freelancer(name, new List<TimeRecord>()
-        //    {
-        //        new TimeRecord(dt.Value.AddDays(0), name, hours, message, TotalPay, "freelancer", newMan)
-        //    });
-        //    Freelancer.freelancer.Add(f);
-        //}
 
         public void AddEmployee(string name, byte hours = 0, Settings.Role selected = 0)
         {            
@@ -254,8 +165,7 @@ namespace CalcSalary
             if (path.Length > 0)
             {
                 Files.Writer(path, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
-            }                
-                        
+            }                                        
         }
 
         public Settings.Role RoleIdentification(string name)
