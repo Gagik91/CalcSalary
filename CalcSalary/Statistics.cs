@@ -34,142 +34,6 @@ namespace CalcSalary
                 catch { continue; }
             }
         }
-        //public static void CalcStatsOfAll()
-        //{
-        //    Person p = new Person();
-        //    DateTime startDate = new DateTime();
-
-        //    int hoursWorked = 0;
-        //    decimal amountToPaid = 0;
-
-        //    if (period == 1)
-        //    {
-        //        startDate = today.AddDays(-1);                
-        //    }
-        //    else if (period == 2)
-        //    {
-        //        startDate = today.AddDays(-7);
-        //    }
-        //    else if (period == 3)
-        //    {
-        //        startDate = today.AddMonths(-1);
-        //    }
-
-        //    foreach (var item in Manager.manager)
-        //    {
-        //        var tRecords = item.TimeRecords.Where(t => t.Date >= startDate);
-        //        decimal tPay = 0;
-        //        int sumHours = 0;
-        //        foreach (var h in tRecords)
-        //        {
-        //            tPay += h.TotalPay;
-        //            sumHours += h.Hours;
-        //        }
-        //        Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
-        //        Console.WriteLine("________");
-        //        hoursWorked += sumHours;
-        //        amountToPaid += tPay;
-        //    }
-        //    foreach (var item in Employee.employee)
-        //    {
-        //        var tRecords = item.TimeRecords.Where(t => t.Date >= startDate);
-        //        decimal tPay = 0;
-        //        var sumHours = 0;
-        //        foreach (var h in tRecords)
-        //        {
-        //            tPay += h.TotalPay;
-        //            sumHours += h.Hours;
-        //        }
-        //        Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
-        //        Console.WriteLine("________");
-        //        hoursWorked += sumHours;
-        //        amountToPaid += tPay;
-
-        //    }
-        //    foreach (var item in Freelancer.freelancer)
-        //    {
-        //        var tRecords = item.TimeRecords.Where(t => t.Date >= startDate);
-        //        decimal tPay = 0;
-        //        var sumHours = 0;
-        //        foreach (var h in tRecords)
-        //        {
-        //            tPay += h.TotalPay;
-        //            sumHours += h.Hours;
-        //        }
-        //        Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{item.Name} отработал {sumHours} часов и заработал за период {tPay}");
-        //        Console.WriteLine("________");
-        //        hoursWorked += sumHours;
-        //        amountToPaid += tPay;
-        //    }
-        //    p.TotalPay += amountToPaid;
-        //    Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} \n");
-        //}
-
-        //расчет статистики конкретного сотрудника по имени
-        //public void CalcStats(string nameEmp)
-        //{
-        //    IEnumerable<Person> nm = null;
-        //    DateTime startDate = new DateTime();
-        //    Stats();
-        //    if (period == 1)
-        //    {
-        //        startDate = today.AddDays(-1);
-        //    }
-        //    else if (period == 2)
-        //    {
-        //        startDate = today.AddDays(-7);
-        //    }
-        //    else if (period == 3)
-        //    {
-        //        startDate = today.AddMonths(-1);
-        //    }
-
-        //    if (Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-        //    {
-        //        nm = Manager.manager.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-        //    }
-        //    else if (Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-        //    {
-        //        nm = Employee.employee.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-        //    }
-        //    else if (Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Any(n => n.TimeRecords.Any(n => n.Date >= startDate)))
-        //    {
-        //        nm = Freelancer.freelancer.Where(n => n.Name.ToLower() == nameEmp.ToLower()).Where(n => n.TimeRecords.Any(n => n.Date >= startDate));
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"\nСотрудник {nameEmp} не работал в период с {startDate.Date.ToShortDateString()} по {today.Date.ToShortDateString()}");
-        //        return;
-        //    }
-            
-        //    if (nm is not null )
-        //    {
-        //        decimal tPay = 0;
-        //        var sumHours = 0;
-        //        string name = nm.FirstOrDefault(s => s.Name.ToLower() == nameEmp.ToLower()).Name;
-
-        //        Console.WriteLine($"Отчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()}");
-        //        foreach (var item in nm)
-        //        {
-        //            var totalPH = item.TimeRecords.Where(t => t.Date >= startDate);
-        //            foreach (var ph in totalPH)
-        //            {
-        //                tPay += ph.TotalPay;
-        //                sumHours += ph.Hours;
-        //                Console.WriteLine($"{ph.Date.ToShortDateString()}, {ph.Hours} часов, {ph.Message}");
-                        
-        //            }
-        //        }
-                
-        //        Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
-        //        Console.WriteLine("___________________________\n");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"В период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} сотрудник {nameEmp} не работал");
-        //    }
-        //}
-
         public void DisplayStats(string name, Settings.Role role)
         {
             Person p = new Person();
@@ -254,23 +118,17 @@ namespace CalcSalary
             }
             
             Files f = new Files();
-            List<(DateTime dT, string name, byte hours, decimal tPay, string message)> tupleData = new List<(DateTime dT, string name, byte hours, decimal tPay, string message)>();
-            tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).Where(n => n.dT >= startDate).ToList();
-            int hoursWorked = 0;
-            decimal amountToPaid = 0;
-            
-            
+            var tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).Where(n => n.dT >= startDate).GroupBy(n => n.name).
+                Select(t => new { name = t.Key, hours = t.Sum(t => t.hours), totalPay = t.Sum(t => t.pay) }).ToList();            
+
             for (int i = 0; i < tupleData.Count; i++)
-            {                
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{tupleData[i].name} отработал {tupleData[i].hours} часов и заработал за период {tupleData[i].tPay}");
+            {
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{tupleData[i].name} отработал {tupleData[i].hours} часов и заработал за период {tupleData[i].totalPay}");
                 Console.WriteLine("________");
-                amountToPaid += tupleData[i].tPay;
-                hoursWorked += tupleData[i].hours;
             }
 
-            p.TotalPay += amountToPaid;
-            Console.WriteLine($"Всего часов отработано за период {hoursWorked}, сумма к выплате {amountToPaid} \n");
-            
+            Console.WriteLine($"За указанный период отработано {tupleData.Sum(s=>s.hours)} часов, сумма к выплате {tupleData.Sum(s => s.totalPay)} \n");
+
         }
         public int CountOfEmployee()
         {
