@@ -10,35 +10,33 @@ namespace CalcSalary
     class ActionsOfEmployees
     {
         private DateTime today = DateTime.Today;
-        private string whatWorkWas;
-
-        public decimal SalaryCalc(byte hr, Settings.Role r)
+        public decimal SalaryCalc(byte hr, Settings.Role role)
         {
             decimal payPerHour = 0;
             decimal totalPay = 0;
             decimal bonusPerDay = 0;
             
-            if (r == Settings.Role.Manager)
+            if (role == Settings.Role.Manager)
             {
                 payPerHour = Settings.Manager.MonthSalary / Settings.WorkHoursInMonth;
                 bonusPerDay = (Settings.Manager.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
             }
-            else if (r == Settings.Role.Employee)
+            else if (role == Settings.Role.Employee)
             {
                 payPerHour = Settings.Employee.MonthSalary / Settings.WorkHoursInMonth;
                 bonusPerDay = (Settings.Employee.MonthBonus / Settings.WorkHoursInMonth) * Settings.WorkHourInDay;
             }
-            else if (r == Settings.Role.Freelancer)
+            else if (role == Settings.Role.Freelancer)
             {
                 payPerHour = Settings.Freelancer.PayPerHour;
                 totalPay += hr * payPerHour;
             }
 
-            if (hr <= Settings.WorkHourInDay && (r == Settings.Role.Manager || r == Settings.Role.Employee))
+            if (hr <= Settings.WorkHourInDay && (role == Settings.Role.Manager || role == Settings.Role.Employee))
             {
                 totalPay += hr * payPerHour;
             }
-            else if(hr > Settings.WorkHourInDay && (r == Settings.Role.Manager || r == Settings.Role.Employee))// переработка
+            else if(hr > Settings.WorkHourInDay && (role == Settings.Role.Manager || role == Settings.Role.Employee))// переработка
             {
                 totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
             }
@@ -46,7 +44,7 @@ namespace CalcSalary
             return totalPay;
         }
 
-        public void AddEmployee(string name, byte hours = 0, Settings.Role selected = 0)
+        public void AddEmployee(string name, Settings.Role selected, byte hours = 0)
         {            
             switch (selected)
             {
@@ -75,6 +73,7 @@ namespace CalcSalary
 
         public void AddHours(string name, Settings.Role role)
         {
+            string whatWorkWas;
             string nameEmp = "";
             Settings.Role roleAddedHours;
             string path = "";
