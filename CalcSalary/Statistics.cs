@@ -11,13 +11,11 @@ namespace CalcSalary
 {
     class Statistics
     {
-        private byte period;
-        private static DateTime today = DateTime.Today;
+        private DateTime today = DateTime.Today;
 
-        //метод выбора периода
-        public void Stats()
+        public byte Stats()
         {
-            period = 0;
+            byte period = 0;
             Console.WriteLine("Выберите период за который требуется просмотреть отчет");
             Console.WriteLine("Нажмите 1, чтобы просмотреть отчет за 1 день");
             Console.WriteLine("Нажмите 2, чтобы просмотреть отчет за неделю");
@@ -33,13 +31,14 @@ namespace CalcSalary
                 }
                 catch { continue; }
             }
+            return period;
         }
         public void DisplayStats(string name, Settings.Role role)
         {
             Person p = new Person();
             Files f = new Files();
             List<(DateTime dT, string name, byte hours, decimal tPay, string message)> tupleData = new List<(DateTime dT, string name, byte hours, decimal tPay, string message)>();
-            Stats();
+            byte period = Stats();
             DateTime startDate = new DateTime();
 
             if (period == 1)
@@ -101,8 +100,8 @@ namespace CalcSalary
 
         public void DisplayAllStats()
         {
+            byte period = Stats();
             Person p = new Person();
-            Stats();
             DateTime startDate = new DateTime();
             if (period == 1)
             {
