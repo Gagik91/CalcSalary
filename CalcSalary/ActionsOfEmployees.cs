@@ -10,6 +10,7 @@ namespace CalcSalary
     class ActionsOfEmployees
     {
         private DateTime today = DateTime.Today;
+        Files files = new Files();
         public decimal SalaryCalc(byte hr, Settings.Role role)
         {
             decimal payPerHour = 0;
@@ -45,25 +46,25 @@ namespace CalcSalary
         }
 
         public void AddEmployee(string name, Settings.Role selected, byte hours = 0)
-        {            
+        {
             switch (selected)
             {
                 case Settings.Role.Manager:
                     { 
-                        Files.Writer(Files.manFile,DateTime.Now.AddDays(0),name,hours,"First Day");
-                        Files.EmployeeListWriter(name, "Manager");
+                        files.Writer(Files.manFile,DateTime.Now.AddDays(0),name,hours,"First Day");
+                        files.EmployeeListWriter(name, "Manager");
                     }
                     break;
                 case Settings.Role.Employee:
                     { 
-                        Files.Writer(Files.empFile, DateTime.Now.AddDays(0), name, hours, "First Day");
-                        Files.EmployeeListWriter(name, "Employee");
+                        files.Writer(Files.empFile, DateTime.Now.AddDays(0), name, hours, "First Day");
+                        files.EmployeeListWriter(name, "Employee");
                     }
                     break;
                 case Settings.Role.Freelancer:
                     { 
-                        Files.Writer(Files.freeFile, DateTime.Now.AddDays(0), name, hours, "First Day");
-                        Files.EmployeeListWriter(name, "Freelancer");
+                        files.Writer(Files.freeFile, DateTime.Now.AddDays(0), name, hours, "First Day");
+                        files.EmployeeListWriter(name, "Freelancer");
                     }
                     break;
                 default:
@@ -163,7 +164,7 @@ namespace CalcSalary
 
             if (path.Length > 0)
             {
-                Files.Writer(path, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
+                files.Writer(path, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
             }                                        
         }
 

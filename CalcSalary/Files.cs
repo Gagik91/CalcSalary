@@ -77,7 +77,7 @@ namespace CalcSalary
             }
             return str;
         }
-        public static void Writer(string path, DateTime date, string name, byte hours, string message)
+        public void Writer(string path, DateTime date, string name, byte hours, string message)
         {
             using (StreamWriter sw = new StreamWriter(path, true))
             {
@@ -85,7 +85,7 @@ namespace CalcSalary
             }
         }
         
-        public static void EmployeeListWriter(string name, string role)
+        public void EmployeeListWriter(string name, string role)
         {
             using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
             {
