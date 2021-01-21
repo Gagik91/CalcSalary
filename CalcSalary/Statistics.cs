@@ -34,7 +34,6 @@ namespace CalcSalary
         }
         public void DisplayStats(string name, Settings.Role role)
         {
-            Person p = new Person();
             Files f = new Files();
             List<(DateTime dT, string name, byte hours, decimal tPay, string message)> tupleData = new List<(DateTime dT, string name, byte hours, decimal tPay, string message)>();
             byte period = Stats();

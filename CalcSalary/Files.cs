@@ -48,7 +48,7 @@ namespace CalcSalary
             }            
             return tupleData;
         }
-        public static string Reader(string path)
+        public string Reader(string path)
         {
             string str = null;
             if (Directory.Exists(@"..\..\..\Files"))
