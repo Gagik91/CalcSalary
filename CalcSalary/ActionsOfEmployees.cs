@@ -11,6 +11,7 @@ namespace CalcSalary
     {
         private DateTime today = DateTime.Today;
         Files files = new Files();
+        Settings set = new Settings();
         public decimal SalaryCalc(byte hr, Settings.Role role)
         {
             decimal payPerHour = 0;
@@ -76,28 +77,14 @@ namespace CalcSalary
         {
             string whatWorkWas;
             string nameEmp = "";
-            Settings.Role roleAddedHours;
-            string path = "";
+            string path = set.PathIdentification(name);
             byte hr = 0;
             if (role == Settings.Role.Manager)
             {
                 Console.Write("Укажите имя сотрудника для добавления часов работы: ");
                 nameEmp = Console.ReadLine();
-                roleAddedHours = RoleIdentification(nameEmp);
-                
-                if (roleAddedHours == Settings.Role.Manager)
-                {
-                    path = Files.manFile;
-                }
-                else if (roleAddedHours == Settings.Role.Employee)
-                {
-                    path = Files.empFile;
-                }
-                else if (roleAddedHours == Settings.Role.Freelancer)
-                {
-                    path = Files.freeFile;
-                }
-                else
+                path = set.PathIdentification(nameEmp);
+                if (path is null)
                 {
                     Console.WriteLine("\n\nСотрудник с таким именем отсутствует\n");
                     return;
@@ -106,13 +93,13 @@ namespace CalcSalary
             }
             else if (role == Settings.Role.Employee)
             {
-                path = Files.empFile;
                 nameEmp = name;
+                path = set.PathIdentification(nameEmp);
             }
             else if (role == Settings.Role.Freelancer)
             {
-                path = Files.freeFile;
                 nameEmp = name;
+                path = set.PathIdentification(nameEmp);
             }
             
             TimeSpan day = new TimeSpan(-1);
@@ -162,7 +149,7 @@ namespace CalcSalary
             Console.WriteLine($"\n\nУкажите выполненную работу");
             whatWorkWas = Console.ReadLine();
 
-            if (path.Length > 0)
+            if (path is not null)
             {
                 files.Writer(path, DateTime.Now.AddDays(-day.Days), nameEmp, hr, whatWorkWas);
             }                                        
