@@ -14,16 +14,10 @@ namespace CalcSalary
         public const string freeFile = @"..\..\..\Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
         public const string employeeListFile = @"..\..\..\Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
 
-        public List<(DateTime dT, string name, byte hours, decimal pay, string message)> FilesAction(params string[] path)
+        public List<AllCurrentData> Reader(List<string> path)
         {
             ActionsOfEmployees a = new ActionsOfEmployees();
-            byte hours = 0;
-            decimal totalPay = 0;
-            string name = "";
-            string message = "";
-            Settings.Role role;
-            DateTime? date = null;
-            List <(DateTime dT, string name, byte hours, decimal tPay, string message)> tupleData = new List<(DateTime dT, string name, byte hours, decimal tPay, string message)>();
+            List <AllCurrentData> data = new List<AllCurrentData>();
             foreach (var itemPath in path)
             {
                 using (TextFieldParser parser = new TextFieldParser(itemPath))
@@ -33,64 +27,94 @@ namespace CalcSalary
                     while (!parser.EndOfData)
                     {
                         string[] fields = parser.ReadFields();
-                        
-                        date = DateTime.Parse(fields[0]);
-                        name = fields[1];
-                        hours = byte.Parse(fields[2]);
-                        message = fields[3];
+
+                        AllCurrentData allData = new AllCurrentData();
+                        allData.date = DateTime.Parse(fields[0]);
+                        allData.name = fields[1];
+                        allData.hours = byte.Parse(fields[2]);
+                        allData.message = fields[3];
                     
-                        role = a.RoleIdentification(name);
-                        totalPay = a.SalaryCalc(hours, role);
-                        tupleData.Add((date.Value, name, hours, totalPay, message));
+                        allData.role = a.RoleIdentification(allData.name);
+                        allData.pay = a.SalaryCalc(allData.hours, allData.role);
+                        data.Add(allData);
                     }
-                    tupleData.Sort();
                 }
             }            
-            return tupleData;
+            return data;
         }
-        public string Reader(string path)
+        public void Writer(string path, AllCurrentData data, bool newEmployee)
         {
-            string str = null;
-            if (Directory.Exists(@"..\..\..\Files"))
+            if (!newEmployee)
             {
-                if (File.Exists(path))
+                using (StreamWriter sw = new StreamWriter(path, true))
                 {
-                    using (StreamReader sr = new StreamReader(path))
-                    {
-                        str = sr.ReadToEnd();
-                    }
-                }
-                               
-                else
-                {
-                    using (File.Create(path))
-                    using (StreamReader sr = new StreamReader(path))
-                    {                        
-                        str = sr.ReadToEnd();
-                    }
+                    sw.WriteLine($"{data.date.ToShortDateString()}, {data.name}, {data.hours}, {data.message}");
                 }
             }
             else
             {
-                Directory.CreateDirectory(@"..\..\..\Files");
-                Reader(path);
+                using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
+                {
+                    employeeListStreamWriter.WriteLine($"{data.name}, {data.role}");
+                }
             }
-            return str;
         }
-        public void Writer(string path, DateTime date, string name, byte hours, string message)
+        public string PathIdentification(string name)
         {
-            using (StreamWriter sw = new StreamWriter(path, true))
+            string path = null;
+            using (TextFieldParser parser = new TextFieldParser(employeeListFile))
             {
-                sw.WriteLine($"{date.ToShortDateString()}, {name}, {hours}, {message}");
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+                    if (fields[0].ToLower() == name.ToLower())
+                    {
+                        if (fields[1].ToLower() == "Manager".ToLower())
+                        {
+                            path = manFile;
+                        }
+                        else if (fields[1].ToLower() == "Employee".ToLower())
+                        {
+                            path = empFile;
+                        }
+                        else if (fields[1].ToLower() == "Freelancer".ToLower())
+                        {
+                            path = freeFile;
+                        }
+                        break;
+                    }
+                }
             }
+            return path;
         }
         
-        public void EmployeeListWriter(string name, string role)
+        public List<string> AllPathsIdentification()
         {
-            using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
+            List<string> listOfPaths = new List<string>();
+            using (TextFieldParser parser = new TextFieldParser(employeeListFile))
             {
-                employeeListStreamWriter.WriteLine($"{name}, {role}");
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+                    if (fields[1].ToLower() == "Manager".ToLower() && !listOfPaths.Contains(manFile))
+                    {
+                        listOfPaths.Add(manFile);
+                    }
+                    else if (fields[1].ToLower() == "Employee".ToLower() && !listOfPaths.Contains(empFile))
+                    {
+                        listOfPaths.Add(empFile);
+                    }
+                    else if (fields[1].ToLower() == "Freelancer".ToLower() && !listOfPaths.Contains(freeFile))
+                    {
+                        listOfPaths.Add(freeFile);
+                    }
+                }
             }
+            return listOfPaths;         
         }
     }  
 }

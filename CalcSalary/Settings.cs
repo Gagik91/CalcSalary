@@ -13,7 +13,6 @@ namespace CalcSalary
             Employee,
             Freelancer
         }
-
         public class Manager
         {
             public const decimal MonthBonus = 20000;
@@ -38,36 +37,5 @@ namespace CalcSalary
         /// рабочие часы в день
         /// </summary>
         public const byte WorkHourInDay = 8;
-
-        public string PathIdentification(string name)
-        {
-            string path = null;
-            using (TextFieldParser parser = new TextFieldParser(Files.employeeListFile))
-            {
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
-                while (!parser.EndOfData)
-                {
-                    string[] fields = parser.ReadFields();
-                    if (fields[0].ToLower() == name.ToLower())
-                    {
-                        if (fields[1].ToLower() == "Manager".ToLower())
-                        {
-                            path = Files.manFile;
-                        }
-                        else if (fields[1].ToLower() == "Employee".ToLower())
-                        {
-                            path = Files.empFile;
-                        }
-                        else if (fields[1].ToLower() == "Freelancer".ToLower())
-                        {
-                            path = Files.freeFile;
-                        }
-                        break;
-                    }
-                }
-            }
-            return path;
-        }
     }
 }

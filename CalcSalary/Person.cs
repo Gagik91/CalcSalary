@@ -49,9 +49,8 @@ namespace CalcSalary
             Console.WriteLine($"Ваша роль: {role}");
             while (!exit)
             {
-
                 Console.WriteLine("\nВыберите желаемое действие:\n");
-
+                
                 switch (role)
                 {
                     case Settings.Role.Manager:
@@ -64,13 +63,10 @@ namespace CalcSalary
                             selectedAction = 0;
                             while (selectedAction < 1 || selectedAction > 5)
                             {
-                                try
-                                {
-                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                    selectedAction = byte.Parse(Console.ReadLine());
-                                    Console.WriteLine("\n");
-                                }
-                                catch { continue; }
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
                             }
                             switch (selectedAction)
                             {
@@ -83,18 +79,15 @@ namespace CalcSalary
                                         Settings.Role selectedEmployee = 0;
                                         while (selectedEmployee < (Settings.Role)1 || selectedEmployee > (Settings.Role)3)
                                         {
-                                            try
-                                            {
-                                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                                selectedEmployee = (Settings.Role)int.Parse(Console.ReadLine());
-                                                Console.WriteLine("\n");
-                                            }
-                                            catch { continue; }
+                                            Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                            string temp = Console.ReadLine();
+                                            Enum.TryParse(temp, out selectedEmployee);
+                                            Console.WriteLine("\n");
                                         }
 
                                         Console.Write("Укажите имя для добавления сотрудника: ");
                                         string nameEmployee = Console.ReadLine();
-                                        actionOfEmp.AddEmployee(nameEmployee, selected: selectedEmployee);
+                                        actionOfEmp.AddEmployee(nameEmployee, selectedRole: selectedEmployee);
                                     }
                                     break;
                                 case 2:
@@ -126,13 +119,10 @@ namespace CalcSalary
                             selectedAction = 0;
                             while (selectedAction < 1 || selectedAction > 3)
                             {
-                                try
-                                {
-                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                    selectedAction = byte.Parse(Console.ReadLine());
-                                    Console.WriteLine("\n");
-                                }
-                                catch { continue; }
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
                             }
                             switch (selectedAction)
                             {
@@ -158,13 +148,10 @@ namespace CalcSalary
                             selectedAction = 0;
                             while (selectedAction < 1 || selectedAction > 3)
                             {
-                                try
-                                {
-                                    Console.Write("Нужно ввести цифру из предложенных вариантов: ");
-                                    selectedAction = byte.Parse(Console.ReadLine());
-                                    Console.WriteLine("\n");
-                                }
-                                catch { continue; }
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
                             }
 
                             switch (selectedAction)

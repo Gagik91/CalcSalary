@@ -22,69 +22,78 @@ namespace CalcSalary
             
             while (period < 1 || period > 3)
             {
-                try
-                {
-                    Console.Write("Нужно ввести цифры из предложенных вариантов: ");
-                    period = byte.Parse(Console.ReadLine());
-                    Console.WriteLine("\n");
-                }
-                catch { continue; }
+                Console.Write("Нужно ввести цифры из предложенных вариантов: ");
+                string temp = Console.ReadLine();
+                byte.TryParse(temp, out period);
+                Console.WriteLine("\n");
             }
             return period;
         }
         public void DisplayStats(string name, Settings.Role role)
         {
-            Files f = new Files();
-            List<(DateTime dT, string name, byte hours, decimal tPay, string message)> tupleData = new List<(DateTime dT, string name, byte hours, decimal tPay, string message)>();
+            Files files = new Files();
+            List<AllCurrentData> data = new List<AllCurrentData>();
+            ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
             byte period = Stats();
             DateTime startDate = new DateTime();
-
-            if (period == 1)
+            switch (period)
             {
-                startDate = today.AddDays(-1);
-            }
-            else if (period == 2)
-            {
-                startDate = today.AddDays(-7);
-            }
-            else if (period == 3)
-            {
-                startDate = today.AddMonths(-1);
+                case 1:
+                    { startDate = today.AddDays(-1); }
+                    break;
+                case 2:
+                    { startDate = today.AddDays(-7); }
+                    break;
+                case 3:
+                    { startDate = today.AddMonths(-1); }
+                    break;
+                default:
+                    break;
             }
                         
             string nameEmp = "";
+            
+            switch (role)
+            {
+                case Settings.Role.Manager:
+                    {
+                        Console.Write("Укажите имя сотрудника для построения отчета: ");
+                        nameEmp = Console.ReadLine();
+                        Console.WriteLine("\n");
+                        var filteredByDate = actionsOfEmployees.FilteredByDate(startDate);
+                        data = actionsOfEmployees.FilteredByName(nameEmp, filteredByDate);
+                    }
+                    break;
+                case Settings.Role.Employee:
+                    {
+                        nameEmp = name;
+                        var filteredByDate = actionsOfEmployees.FilteredByDate(startDate);
+                        data = actionsOfEmployees.FilteredByName(nameEmp, filteredByDate);
+                    }
+                    break;
+                case Settings.Role.Freelancer:
+                    {
+                        nameEmp = name;
+                        var filteredByDate = actionsOfEmployees.FilteredByDate(startDate);
+                        data = actionsOfEmployees.FilteredByName(nameEmp, filteredByDate);
+                    }
+                    break;
+                default:
+                    break;
+            }
 
-            if (role == Settings.Role.Manager)
-            {
-                Console.Write("Укажите имя сотрудника для построения отчета: ");
-                nameEmp = Console.ReadLine();
-                Console.WriteLine("\n");
-                tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).Where(n => n.dT >= startDate && n.name.ToLower() == nameEmp.ToLower()).ToList();                 
-            }
-                        
-            else if (role == Settings.Role.Employee)
-            {
-                nameEmp = name;
-                tupleData = f.FilesAction(Files.empFile).Where(n => n.dT >= startDate && n.name.ToLower() == nameEmp.ToLower()).ToList();
-            }
-            else if (role == Settings.Role.Freelancer)
-            {
-                nameEmp = name;
-                tupleData = f.FilesAction(Files.freeFile).Where(n => n.dT >= startDate && n.name.ToLower() == nameEmp.ToLower()).ToList();
-            }
-
-            if (tupleData.Count > 0)
+            if (data.Count > 0)
             {
                 decimal tPay = 0;
                 var sumHours = 0;
-                name = tupleData.Select(n=>n.name).FirstOrDefault();
+                name = data.Select(n=>n.name).FirstOrDefault();
 
                 Console.WriteLine($"Отчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()}");
-                foreach (var item in tupleData)
+                foreach (var item in data)
                 {
-                    tPay += item.tPay;
+                    tPay += item.pay;
                     sumHours += item.hours;
-                    Console.WriteLine($"{item.dT.ToShortDateString()}, {item.hours} часов, {item.message}");
+                    Console.WriteLine($"{item.date.ToShortDateString()}, {item.hours} часов, {item.message}");
                 }
 
                 Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
@@ -99,35 +108,36 @@ namespace CalcSalary
         public void DisplayAllStats()
         {
             byte period = Stats();
-            Person p = new Person();
+            Person person = new Person();
+            ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
             DateTime startDate = new DateTime();
-            if (period == 1)
+            switch (period)
             {
-                startDate = today.AddDays(-1);
-            }
-            else if (period == 2)
-            {
-                startDate = today.AddDays(-7);
-            }
-            else if (period == 3)
-            {
-                startDate = today.AddMonths(-1);
+                case 1:
+                    { startDate = today.AddDays(-1); }
+                    break;
+                case 2:
+                    { startDate = today.AddDays(-7); }
+                    break;
+                case 3:
+                    { startDate = today.AddMonths(-1); }
+                    break;
+                default:
+                    break;
             }
             
-            Files f = new Files();
-            var tupleData = f.FilesAction(Files.manFile, Files.empFile, Files.freeFile).
-                Where(n => n.dT >= startDate).GroupBy(n => n.name).
-                Select(t => new { name = t.Key, hours = t.
-                Sum(t => t.hours), totalPay = t.
-                Sum(t => t.pay) }).ToList();            
+            Files files = new Files();
 
-            for (int i = 0; i < tupleData.Count; i++)
+            var filteredByDate = actionsOfEmployees.FilteredByDate(startDate);
+            var sum = actionsOfEmployees.HoursAndPaySummedByName(acceptedData: filteredByDate);
+
+            for (int i = 0; i < sum.Count; i++)
             {
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{tupleData[i].name} отработал {tupleData[i].hours} часов и заработал за период {tupleData[i].totalPay}");
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{sum[i].name} отработал {sum[i].hours} часов и заработал за период {sum[i].pay}");
                 Console.WriteLine("________");
             }
 
-            Console.WriteLine($"За указанный период отработано {tupleData.Sum(s=>s.hours)} часов, сумма к выплате {tupleData.Sum(s => s.totalPay)} \n");
+            Console.WriteLine($"За указанный период отработано {sum.Sum(s => s.hours)} часов, сумма к выплате {sum.Sum(s => s.pay)} \n");
         }        
     }
 }
