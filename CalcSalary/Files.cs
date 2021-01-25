@@ -9,15 +9,15 @@ namespace CalcSalary
 {
     public class Files
     {
-        public const string manFile = @"..\..\..\Files\managerHoursWorkedList.csv";     //список всех менеджеров с отработанными часами
-        public const string empFile = @"..\..\..\Files\employeeHoursWorkedList.csv";    //список всех сотрудников на зарплате с отработанными часами
-        public const string freeFile = @"..\..\..\Files\freelancerHoursWorkedList.csv"; //список всех фрилансеров с отработанными часами
-        public const string employeeListFile = @"..\..\..\Files\employeeListFile.csv";  //список всех сотрудников с указанием ролей
+        public const string manFile = @"..\..\..\Files\managerHoursWorkedList.csv";     //List of all managers with worked hours
+        public const string empFile = @"..\..\..\Files\employeeHoursWorkedList.csv";    //List of all employees with worked hours
+        public const string freeFile = @"..\..\..\Files\freelancerHoursWorkedList.csv"; //List of all freelancers with worked hours
+        public const string employeeListFile = @"..\..\..\Files\employeeListFile.csv";  //List of all employees
 
-        public List<AllCurrentData> Reader(List<string> path)
+        public List<Person> Reader(List<string> path)
         {
-            ActionsOfEmployees a = new ActionsOfEmployees();
-            List <AllCurrentData> data = new List<AllCurrentData>();
+            ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
+            List<Person> data = new List<Person>();
             foreach (var itemPath in path)
             {
                 using (TextFieldParser parser = new TextFieldParser(itemPath))
@@ -27,35 +27,35 @@ namespace CalcSalary
                     while (!parser.EndOfData)
                     {
                         string[] fields = parser.ReadFields();
+                        var allData = ClassIdentification(fields[1]);
 
-                        AllCurrentData allData = new AllCurrentData();
-                        allData.date = DateTime.Parse(fields[0]);
-                        allData.name = fields[1];
-                        allData.hours = byte.Parse(fields[2]);
-                        allData.message = fields[3];
-                    
-                        allData.role = a.RoleIdentification(allData.name);
-                        allData.pay = a.SalaryCalc(allData.hours, allData.role);
+                        allData.Date = DateTime.Parse(fields[0]);
+                        allData.Name = fields[1];
+                        allData.Hours = byte.Parse(fields[2]);
+                        allData.Message = fields[3];
+
+                        allData.Role = actionsOfEmployees.RoleIdentification(allData.Name);
+                        allData.Pay = actionsOfEmployees.SalaryCalc(allData.Hours, allData.Role);
                         data.Add(allData);
                     }
                 }
-            }            
+            }
             return data;
         }
-        public void Writer(string path, AllCurrentData data, bool newEmployee)
+        public void Writer(string path, Person data, bool newEmployee)
         {
             if (!newEmployee)
             {
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
-                    sw.WriteLine($"{data.date.ToShortDateString()}, {data.name}, {data.hours}, {data.message}");
+                    sw.WriteLine($"{data.Date.ToShortDateString()}, {data.Name}, {data.Hours}, {data.Message}");
                 }
             }
             else
             {
                 using (StreamWriter employeeListStreamWriter = new StreamWriter(employeeListFile, true))
                 {
-                    employeeListStreamWriter.WriteLine($"{data.name}, {data.role}");
+                    employeeListStreamWriter.WriteLine($"{data.Name}, {data.Role}");
                 }
             }
         }
@@ -89,7 +89,26 @@ namespace CalcSalary
             }
             return path;
         }
-        
+
+        public Person ClassIdentification(string name)
+        {
+            Manager m = new Manager(name);
+            Employee e = new Employee(name);
+            Freelancer f = new Freelancer(name);
+            ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
+
+            Settings.Role roleIdentification = actionsOfEmployees.RoleIdentification(name);
+
+            if (roleIdentification == Settings.Role.Manager)
+            { return m; }
+
+            else if (roleIdentification == Settings.Role.Employee)
+            { return e; }
+
+            else
+            { return f; }
+        }
+
         public List<string> AllPathsIdentification()
         {
             List<string> listOfPaths = new List<string>();

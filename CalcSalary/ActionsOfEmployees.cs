@@ -11,6 +11,166 @@ namespace CalcSalary
     {
         private DateTime today = DateTime.Today;
         Files files = new Files();
+
+        public static void ActionMenu()
+        {
+            bool exit = false;
+
+            Console.Write("Введите Ваше имя: ");
+            string name = Console.ReadLine();
+            ActionsOfEmployees actionOfEmp = new ActionsOfEmployees();
+            Settings.Role? role = actionOfEmp.RoleIdentification(name);
+            byte selectedAction;
+            Statistics stat = new Statistics();
+
+            while (role == 0)
+            {
+                Console.Write($"Сотрудник с именем {name} не найден, нажмите 1 для выхода или введите имя: ");
+                name = Console.ReadLine();
+                Console.WriteLine("\n");
+                if (name == "1")
+                {
+                    exit = true;
+                    break;
+                }
+                else
+                {
+                    role = actionOfEmp.RoleIdentification(name);
+                }
+            }
+
+            Console.WriteLine($"Здравствуйте, {name}!");
+            Console.WriteLine($"Ваша роль: {role}");
+            while (!exit)
+            {
+                Console.WriteLine("\nВыберите желаемое действие:\n");
+
+                switch (role)
+                {
+                    case Settings.Role.Manager:
+                        {
+                            Console.WriteLine("(1) Добавить сотрудника: ");
+                            Console.WriteLine("(2) Просмотреть отчет по всем сотрудникам: ");
+                            Console.WriteLine("(3) Просмотреть отчет по конкретному сотруднику: ");
+                            Console.WriteLine("(4) Добавить часы работы: ");
+                            Console.WriteLine("(5) Выход из программы: ");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 5)
+                            {
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
+                            }
+                            switch (selectedAction)
+                            {
+                                case 1:
+                                    {
+                                        Console.WriteLine("Укажите должность для добавления сотрудника: ");
+                                        Console.WriteLine("Руководитель - нажмите 1: ");
+                                        Console.WriteLine("Сотрудник на зарплате - нажмите 2: ");
+                                        Console.WriteLine("Внештатный сотрудник - нажмите 3: ");
+                                        Settings.Role selectedEmployee = 0;
+                                        while (selectedEmployee < (Settings.Role)1 || selectedEmployee > (Settings.Role)3)
+                                        {
+                                            Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                            string temp = Console.ReadLine();
+                                            Enum.TryParse(temp, out selectedEmployee);
+                                            Console.WriteLine("\n");
+                                        }
+
+                                        Console.Write("Укажите имя для добавления сотрудника: ");
+                                        string nameEmployee = Console.ReadLine();
+                                        actionOfEmp.AddEmployee(nameEmployee, selectedRole: selectedEmployee);
+                                    }
+                                    break;
+                                case 2:
+                                    {
+                                        stat.DisplayAllStats();
+                                    }
+                                    break;
+                                case 3:
+                                    {
+                                        stat.DisplayStats(name, role.Value);
+                                    }
+                                    break;
+                                case 4:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 5:
+                                    { exit = true; }
+                                    break;
+                            }
+                        }
+                        break;
+                    case Settings.Role.Employee:
+                        {
+                            Console.WriteLine("(1) Добавить часы работы: ");
+                            Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
+                            Console.WriteLine("(3) Выход из программы: ");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 3)
+                            {
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
+                            }
+                            switch (selectedAction)
+                            {
+                                case 1:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 2:
+                                    { stat.DisplayStats(name, role.Value); }
+                                    break;
+                                case 3:
+                                    { exit = true; }
+                                    break;
+                            }
+                        }
+                        break;
+                    case Settings.Role.Freelancer:
+                        {
+                            Console.WriteLine("(1) Добавить часы работы: ");
+                            Console.WriteLine("(2) Просмотреть отчет по отработанным часам и зарплате за период: ");
+                            Console.WriteLine("(3) Выход из программы:");
+                            selectedAction = 0;
+                            while (selectedAction < 1 || selectedAction > 3)
+                            {
+                                Console.Write("Нужно ввести цифру из предложенных вариантов: ");
+                                string temp = Console.ReadLine();
+                                byte.TryParse(temp, out selectedAction);
+                                Console.WriteLine("\n");
+                            }
+
+                            switch (selectedAction)
+                            {
+                                case 1:
+                                    {
+                                        actionOfEmp.AddHours(name, role.Value);
+                                    }
+                                    break;
+                                case 2:
+                                    { stat.DisplayStats(name, role.Value); }
+                                    break;
+                                case 3:
+                                    { exit = true; }
+                                    break;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
         public decimal SalaryCalc(byte hr, Settings.Role role)
         {
             decimal payPerHour = 0;
@@ -44,7 +204,7 @@ namespace CalcSalary
             {
                 totalPay += hr * payPerHour;
             }
-            else
+            else if (hr > 8 && role != Settings.Role.Freelancer)
             {
                 totalPay += (Settings.WorkHourInDay * payPerHour) + bonusPerDay;
             }
@@ -54,13 +214,13 @@ namespace CalcSalary
 
         public void AddEmployee(string name, Settings.Role selectedRole)
         {
-            AllCurrentData allCurrentData = new AllCurrentData()
+            Person allCurrentData = new Person()
             {
-                date = DateTime.Now.AddDays(0),
-                name = name,
-                hours = 0,
-                message = "First Day",
-                role = selectedRole
+                Date = DateTime.Now.AddDays(0),
+                Name = name,
+                Hours = 0,
+                Message = "First Day",
+                Role = selectedRole
             };
             switch (selectedRole)
             {
@@ -93,7 +253,7 @@ namespace CalcSalary
             string nameEmp = "";
             string path = files.PathIdentification(name);
             byte hr = 0;
-            AllCurrentData allCurrentData = new AllCurrentData();
+            Person allCurrentData = new Person();
 
             switch (role)
             {
@@ -169,10 +329,10 @@ namespace CalcSalary
 
             if (path is not null)
             {
-                allCurrentData.date = DateTime.Now.AddDays(-day.Days);
-                allCurrentData.name = nameEmp;
-                allCurrentData.hours = hr;
-                allCurrentData.message = whatWorkWas;
+                allCurrentData.Date = DateTime.Now.AddDays(-day.Days);
+                allCurrentData.Name = nameEmp;
+                allCurrentData.Hours = hr;
+                allCurrentData.Message = whatWorkWas;
                 
                 files.Writer(path, allCurrentData, false);
             }                                        
@@ -205,64 +365,123 @@ namespace CalcSalary
             return role.GetValueOrDefault();
         }
 
-        public List<AllCurrentData> AllData()
+        public List<Person> AllData()
         {
-            List<AllCurrentData> allData = new List<AllCurrentData>();
+            List<Person> allData = new List<Person>();
             Files files = new Files();
             List<string> listOfPaths = files.AllPathsIdentification();
             allData = files.Reader(listOfPaths);
             return allData;
         }
-        public List<AllCurrentData> FilteredByDate(DateTime startDate)
+
+        //public List<AllCurrentData> AllData()
+        //{
+        //    List<AllCurrentData> allData = new List<AllCurrentData>();
+        //    Files files = new Files();
+        //    List<string> listOfPaths = files.AllPathsIdentification();
+        //    allData = files.Reader(listOfPaths);
+        //    return allData;
+        //}
+        public List<Person> FilteredByDate(DateTime startDate)
         {
-            List<AllCurrentData> allData = AllData();
-            List<AllCurrentData> filteredByDate = allData.Where(n => n.date >= startDate).ToList();
+            List<Person> allData = AllData();
+            List<Person> filteredByDate = allData.Where(n => n.Date >= startDate).ToList();
 
             return filteredByDate;
         }
-        public List<AllCurrentData> FilteredByName(string name, List<AllCurrentData> data = null)
+        //public List<AllCurrentData> FilteredByDate(DateTime startDate)
+        //{
+        //    List<AllCurrentData> allData = AllData();
+        //    List<AllCurrentData> filteredByDate = allData.Where(n => n.date >= startDate).ToList();
+
+        //    return filteredByDate;
+        //}
+        public List<Person> FilteredByName(string name, List<Person> data = null)
         {
-            List<AllCurrentData> filteredByName = new List<AllCurrentData>();
+            List<Person> filteredByName = new List<Person>();
             if (data is null)
             {
-                List<AllCurrentData> allData = AllData();
-                filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();    
+                List<Person> allData = AllData();
+                filteredByName = allData.Where(n => n.Name.ToLower() == name.ToLower()).ToList();
             }
             else
             {
-                List<AllCurrentData> allData = data;
-                filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();
+                List<Person> allData = data;
+                filteredByName = allData.Where(n => n.Name.ToLower() == name.ToLower()).ToList();
             }
             return filteredByName;
         }
-        public List<AllCurrentData> HoursAndPaySummedByName(string acceptedName = null, List<AllCurrentData> acceptedData = null)
+        //public List<AllCurrentData> FilteredByName(string name, List<AllCurrentData> data = null)
+        //{
+        //    List<AllCurrentData> filteredByName = new List<AllCurrentData>();
+        //    if (data is null)
+        //    {
+        //        List<AllCurrentData> allData = AllData();
+        //        filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();    
+        //    }
+        //    else
+        //    {
+        //        List<AllCurrentData> allData = data;
+        //        filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();
+        //    }
+        //    return filteredByName;
+        //}
+        public List<Person> HoursAndPaySummedByName(string acceptedName = null, List<Person> acceptedData = null)
         {
-            List<AllCurrentData> summedByName = new List<AllCurrentData>();
-            List<AllCurrentData> data = new List<AllCurrentData>();
-            
+            List<Person> summedByName = new List<Person>();
+            List<Person> data = new List<Person>();
+
             if (acceptedData is null)
             {
                 _ = acceptedName is null ? data = AllData() : data = FilteredByName(acceptedName);
             }
 
-            else 
+            else
             {
                 _ = acceptedName is null ? data = acceptedData : data = FilteredByName(acceptedName, acceptedData);
             }
-
             summedByName = data
-                            .GroupBy(n => n.name.ToLower())
-                            .Select(t => new AllCurrentData
+                            .GroupBy(n => n.Name.ToLower())
+                            .Select(t => new Person
                             {
-                                name = t.Key,
-                                hours = (byte)t
-                            .Sum(t => t.hours),
-                                pay = t
-                            .Sum(t => t.pay)
+                                Name = t.Key,
+                                Hours = (byte)t
+                            .Sum(t => t.Hours),
+                                Pay = t
+                            .Sum(t => t.Pay)
                             })
-                            .Where(n => n.hours > 0)
+                            .Where(n => n.Hours > 0)
                             .ToList();
             return summedByName;
         }
+        //public List<AllCurrentData> HoursAndPaySummedByName(string acceptedName = null, List<AllCurrentData> acceptedData = null)
+        //{
+        //    List<AllCurrentData> summedByName = new List<AllCurrentData>();
+        //    List<AllCurrentData> data = new List<AllCurrentData>();
+
+        //    if (acceptedData is null)
+        //    {
+        //        _ = acceptedName is null ? data = AllData() : data = FilteredByName(acceptedName);
+        //    }
+
+        //    else 
+        //    {
+        //        _ = acceptedName is null ? data = acceptedData : data = FilteredByName(acceptedName, acceptedData);
+        //    }
+
+        //    summedByName = data
+        //                    .GroupBy(n => n.name.ToLower())
+        //                    .Select(t => new AllCurrentData
+        //                    {
+        //                        name = t.Key,
+        //                        hours = (byte)t
+        //                    .Sum(t => t.hours),
+        //                        pay = t
+        //                    .Sum(t => t.pay)
+        //                    })
+        //                    .Where(n => n.hours > 0)
+        //                    .ToList();
+        //    return summedByName;
+        //}
     }
 }

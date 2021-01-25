@@ -4,9 +4,9 @@ using System.Text;
 
 namespace CalcSalary
 {
-    public class Staff:Person
+    public abstract class Staff:Person
     {
-        public Staff(string name, decimal monthSalary) : base(name)
+        public Staff(string name) : base(name)
         { }
     }
 }

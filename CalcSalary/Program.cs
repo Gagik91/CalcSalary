@@ -12,7 +12,7 @@ namespace CalcSalary
     {
         static void Main(string[] args)
         {
-            Person.ActionMenu();
+            ActionsOfEmployees.ActionMenu();
         }
     }
 }

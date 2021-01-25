@@ -10,11 +10,11 @@ namespace CalcSalary
         public enum Role
         {
             Manager = 1,
-            Employee,
-            Freelancer
+            Employee = 2,
+            Freelancer = 3
         }
         public class Manager
-        {
+        {            
             public const decimal MonthBonus = 20000;
             public const decimal MonthSalary = 200000;
         }

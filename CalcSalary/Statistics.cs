@@ -32,7 +32,8 @@ namespace CalcSalary
         public void DisplayStats(string name, Settings.Role role)
         {
             Files files = new Files();
-            List<AllCurrentData> data = new List<AllCurrentData>();
+            List<Person> data = new List<Person>();
+            //List<AllCurrentData> data = new List<AllCurrentData>();
             ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
             byte period = Stats();
             DateTime startDate = new DateTime();
@@ -86,14 +87,14 @@ namespace CalcSalary
             {
                 decimal tPay = 0;
                 var sumHours = 0;
-                name = data.Select(n=>n.name).FirstOrDefault();
+                name = data.Select(n=>n.Name).FirstOrDefault();
 
                 Console.WriteLine($"Отчет по сотруднику: {name} за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()}");
                 foreach (var item in data)
                 {
-                    tPay += item.pay;
-                    sumHours += item.hours;
-                    Console.WriteLine($"{item.date.ToShortDateString()}, {item.hours} часов, {item.message}");
+                    tPay += item.Pay;
+                    sumHours += item.Hours;
+                    Console.WriteLine($"{item.Date.ToShortDateString()}, {item.Hours} часов, {item.Message}");
                 }
 
                 Console.WriteLine($"Итого: отработанные часы - {sumHours}, заработано: {tPay}");
@@ -107,8 +108,7 @@ namespace CalcSalary
 
         public void DisplayAllStats()
         {
-            byte period = Stats();
-            Person person = new Person();
+            byte period = Stats();            
             ActionsOfEmployees actionsOfEmployees = new ActionsOfEmployees();
             DateTime startDate = new DateTime();
             switch (period)
@@ -133,11 +133,11 @@ namespace CalcSalary
 
             for (int i = 0; i < sum.Count; i++)
             {
-                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{sum[i].name} отработал {sum[i].hours} часов и заработал за период {sum[i].pay}");
+                Console.WriteLine($"Отчет за период с {startDate.ToShortDateString()} по {today.AddDays(-1).ToShortDateString()} день \n{sum[i].Name} отработал {sum[i].Hours} часов и заработал за период {sum[i].Pay}");
                 Console.WriteLine("________");
             }
 
-            Console.WriteLine($"За указанный период отработано {sum.Sum(s => s.hours)} часов, сумма к выплате {sum.Sum(s => s.pay)} \n");
+            Console.WriteLine($"За указанный период отработано {sum.Sum(s => s.Hours)} часов, сумма к выплате {sum.Sum(s => s.Pay)} \n");
         }        
     }
 }

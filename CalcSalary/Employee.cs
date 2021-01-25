@@ -6,7 +6,7 @@ namespace CalcSalary
 {
     public class Employee : Staff
     {
-        public Employee(string name) : base(name, Settings.Employee.MonthSalary)
+        public Employee(string name) : base(name)
         { }
     }
 }
