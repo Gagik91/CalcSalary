@@ -374,14 +374,6 @@ namespace CalcSalary
             return allData;
         }
 
-        //public List<AllCurrentData> AllData()
-        //{
-        //    List<AllCurrentData> allData = new List<AllCurrentData>();
-        //    Files files = new Files();
-        //    List<string> listOfPaths = files.AllPathsIdentification();
-        //    allData = files.Reader(listOfPaths);
-        //    return allData;
-        //}
         public List<Person> FilteredByDate(DateTime startDate)
         {
             List<Person> allData = AllData();
@@ -389,13 +381,7 @@ namespace CalcSalary
 
             return filteredByDate;
         }
-        //public List<AllCurrentData> FilteredByDate(DateTime startDate)
-        //{
-        //    List<AllCurrentData> allData = AllData();
-        //    List<AllCurrentData> filteredByDate = allData.Where(n => n.date >= startDate).ToList();
 
-        //    return filteredByDate;
-        //}
         public List<Person> FilteredByName(string name, List<Person> data = null)
         {
             List<Person> filteredByName = new List<Person>();
@@ -411,21 +397,7 @@ namespace CalcSalary
             }
             return filteredByName;
         }
-        //public List<AllCurrentData> FilteredByName(string name, List<AllCurrentData> data = null)
-        //{
-        //    List<AllCurrentData> filteredByName = new List<AllCurrentData>();
-        //    if (data is null)
-        //    {
-        //        List<AllCurrentData> allData = AllData();
-        //        filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();    
-        //    }
-        //    else
-        //    {
-        //        List<AllCurrentData> allData = data;
-        //        filteredByName = allData.Where(n => n.name.ToLower() == name.ToLower()).ToList();
-        //    }
-        //    return filteredByName;
-        //}
+
         public List<Person> HoursAndPaySummedByName(string acceptedName = null, List<Person> acceptedData = null)
         {
             List<Person> summedByName = new List<Person>();
@@ -454,34 +426,5 @@ namespace CalcSalary
                             .ToList();
             return summedByName;
         }
-        //public List<AllCurrentData> HoursAndPaySummedByName(string acceptedName = null, List<AllCurrentData> acceptedData = null)
-        //{
-        //    List<AllCurrentData> summedByName = new List<AllCurrentData>();
-        //    List<AllCurrentData> data = new List<AllCurrentData>();
-
-        //    if (acceptedData is null)
-        //    {
-        //        _ = acceptedName is null ? data = AllData() : data = FilteredByName(acceptedName);
-        //    }
-
-        //    else 
-        //    {
-        //        _ = acceptedName is null ? data = acceptedData : data = FilteredByName(acceptedName, acceptedData);
-        //    }
-
-        //    summedByName = data
-        //                    .GroupBy(n => n.name.ToLower())
-        //                    .Select(t => new AllCurrentData
-        //                    {
-        //                        name = t.Key,
-        //                        hours = (byte)t
-        //                    .Sum(t => t.hours),
-        //                        pay = t
-        //                    .Sum(t => t.pay)
-        //                    })
-        //                    .Where(n => n.hours > 0)
-        //                    .ToList();
-        //    return summedByName;
-        //}
     }
 }
