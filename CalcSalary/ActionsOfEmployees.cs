@@ -405,12 +405,12 @@ namespace CalcSalary
 
             if (acceptedData is null)
             {
-                _ = acceptedName is null ? data = AllData() : data = FilteredByName(acceptedName);
+                data = (acceptedName is null) ? data = AllData() : data = FilteredByName(acceptedName);
             }
 
             else
             {
-                _ = acceptedName is null ? data = acceptedData : data = FilteredByName(acceptedName, acceptedData);
+                data = (acceptedName is null) ? data = acceptedData : data = FilteredByName(acceptedName, acceptedData);
             }
             summedByName = data
                             .GroupBy(n => n.Name.ToLower())
@@ -424,6 +424,7 @@ namespace CalcSalary
                             })
                             .Where(n => n.Hours > 0)
                             .ToList();
+
             return summedByName;
         }
     }
